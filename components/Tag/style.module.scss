@@ -1,0 +1,55 @@
+.tag {
+  padding: 4px 8px;
+  margin: 0 8px 0 0;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  transition: all 300ms ease-in;
+  &:hover {
+    transition: all 300ms ease-in;
+    filter: brightness(1.5);
+  }
+}
+
+.brown {
+  background-color: #df9c80;
+  color: #191919;
+}
+
+.red {
+  background-color: #ed8f7e;
+  color: #191919;
+}
+
+.purple {
+  background-color: #7719b0;
+  color: #fff;
+}
+
+.blue {
+  background-color: #6cbcde;
+  color: #191919;
+}
+
+.yellow {
+  background-color: #ffcd65;
+  color: #191919;
+  &.white {
+    color: #fff;
+  }
+}
+
+.pink {
+  background-color: #d36cde;
+  color: #fff;
+}
+
+.green {
+  background-color: #67e6a7;
+  color: #191919;
+}
+
+.orange {
+  background-color: #d86a3b;
+  color: #fff;
+}

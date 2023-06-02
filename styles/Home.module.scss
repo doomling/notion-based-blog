@@ -1,0 +1,59 @@
+.container {
+  max-width: 960px;
+  width: 100%;
+  margin: auto;
+  img {
+    width: 100%;
+  }
+  p {
+    a {
+      color: #7d5aed;
+    }
+  }
+}
+
+.articleContainer {
+  max-width: 800px;
+  margin: auto;
+}
+
+.cta {
+  font-style: italic;
+  font-weight: 100;
+  font-size: 1em;
+  margin-top: 50px;
+  padding: 20px;
+  text-align: center;
+  border-top: 1px dashed #ccc;
+}
+
+// .entries {
+//   display: flex;
+//   flex-wrap: wrap;
+//   justify-content: space-between;
+
+//   @media (max-width: 1200px) {
+//     display: block;
+//   }
+// }
+
+.back {
+  &:hover {
+    color: #ffcd65;
+  }
+}
+
+.tagsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 20px auto;
+  width: 100%;
+  max-width: 800px;
+}
+
+@media only screen and (max-width: 768px) {
+  .container {
+    width: 90%;
+    margin: auto;
+  }
+}

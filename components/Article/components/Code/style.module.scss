@@ -1,0 +1,27 @@
+.codeContainer {
+  border: 1px solid #333;
+  border-radius: 5px;
+  position: relative;
+}
+.code {
+  padding: 16px;
+  width: 100%;
+  display: block;
+  font-size: 1em;
+  line-height: 1.8em;
+}
+
+.label {
+  color: rgba(159, 159, 159, 0.836);
+  font-style: italic;
+  font-size: 0.9em;
+  padding: 10px 0 0 15px;
+  display: inline-block;
+}
+
+.tagContainer {
+  position: absolute;
+  right: 0;
+  top: 8px;
+  max-width: 250px;
+}
