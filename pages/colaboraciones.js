@@ -55,33 +55,3 @@ export default function Home({ entries }) {
     </>
   );
 }
-
-export async function getServerSideProps() {
-  const entries = await notion.databases.query({
-    database_id: process.env.NOTION_DATABASE_ID,
-  });
-
-  const mappedEntries = entries.results
-    .map((entry) => {
-      const { properties } = entry;
-      const { name, description, tags, visible, niceUrl, hideInList } =
-        properties;
-
-      return {
-        name: name.title,
-        description: description.rich_text,
-        tags: tags.multi_select,
-        id: entry.id,
-        visible: visible.checkbox,
-        niceUrl: niceUrl.rich_text[0].plain_text,
-        hideInList: hideInList?.checkbox,
-      };
-    })
-    .filter((entry) => entry.visible == true && entry.hideInList == false);
-
-  return {
-    props: {
-      entries: mappedEntries ?? [],
-    },
-  };
-}

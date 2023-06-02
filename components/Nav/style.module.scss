@@ -68,10 +68,39 @@
     li {
       list-style: none;
       min-width: 32px;
-      padding: 0 5px;
+      padding: 0 7px;
+      border-bottom: 1px solid #7d5aed;
+      transition: all 300ms ease-in-out;
+      margin: 7px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+
+      &:hover {
+        border-bottom: 1px solid #fff;
+        transition: all 0.5s ease-in-out;
+        &::before {
+          top: 0;
+        }
+      }
+      &::before {
+        content: "";
+        position: absolute;
+        // top: 0;
+        top: -100%;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(124, 90, 237, 0.3);
+        transition: top 0.5s ease;
+        z-index: -1;
+      }
 
       a {
-        margin-top: -5px;
+        margin-top: 5px;
+        min-width: 20px;
       }
     }
   }

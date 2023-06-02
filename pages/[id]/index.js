@@ -38,6 +38,8 @@ export async function getServerSideProps({ params }) {
     },
   });
 
+  console.log(entries);
+
   if (
     entries.results.length == 0 ||
     entries.results[0].properties.visible.checkbox == false
