@@ -42,13 +42,18 @@ export default function Home({ entries }) {
           En los últimos años me dediqué principalmente al trabajo independiente
           mientras aprovecho para divulgar sobre tecnología y programación en
           diversos proyectos. Los más relevantes son{" "}
-          <a href="https://teloexplicocongatitos.com" target="_blank">
+          <a
+            href="https://teloexplicocongatitos.com"
+            target="_blank"
+            rel="noreferrer"
+          >
             teloexplicocongatitos
           </a>{" "}
           y{" "}
           <a
             href="https://www.youtube.com/watch?v=NUGKYfArU54&list=PLoIQktQDGsr8qFskV3lWcg0cabOmfgRce"
             target="_blank"
+            rel="noreferrer"
           >
             mi curso semanal gratuito de nodeJS en Youtube.
           </a>
@@ -62,7 +67,11 @@ export default function Home({ entries }) {
 
         <p>
           Si querés conocer más sobre mi perfil profesional podés visitar mi{" "}
-          <a href="https://www.linkedin.com/in/belrey/" target="_blank">
+          <a
+            href="https://www.linkedin.com/in/belrey/"
+            target="_blank"
+            rel="noreferrer"
+          >
             Linkedin
           </a>
           .
