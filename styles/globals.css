@@ -39,3 +39,13 @@ iframe {
 .yellow {
   color: #ffcd65;
 }
+
+iframe {
+  width: 560px;
+  height: 315px;
+
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+    height: auto;
+  }
+}
