@@ -27,6 +27,11 @@ h2 {
   box-sizing: border-box;
 }
 
+iframe {
+  margin: auto;
+  display: block;
+}
+
 .blue {
   color: #337ea9;
 }

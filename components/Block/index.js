@@ -17,11 +17,14 @@ export default function Block({ data }) {
       heading_2: (heading) => <Heading2 blocks={heading.rich_text} />,
       heading_3: (heading) => <Heading3 blocks={heading.rich_text} />,
       bulleted_list_item: (listItem) => <List blocks={listItem.rich_text} />,
+      video: (video) => (
+        <iframe width="560" height="315" src={video.external.url}></iframe>
+      ),
       image: (image) => {
-        let url = image.file.url ? image.file.url : ""
-        return <Image url={url} alt={image.caption[0]?.plain_text} />
-      }
-    }
+        let url = image.file.url ? image.file.url : "";
+        return <Image url={url} alt={image.caption[0]?.plain_text} />;
+      },
+    };
 
     return types[type] ? types[type](blockData[type]) : "";
   }

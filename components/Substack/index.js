@@ -13,7 +13,6 @@ const Substack = () => {
         height="320"
         style={{ border: "1px solid #EEE", background: "white" }}
         frameborder="0"
-        scrolling="no"
       ></iframe>
     </>
   );
