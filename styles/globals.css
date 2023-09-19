@@ -66,3 +66,9 @@ iframe {
     height: auto;
   }
 }
+
+.twitter-tweet {
+  padding: 20px;
+  margin: 30px auto;
+  opacity: 0.8;
+}
