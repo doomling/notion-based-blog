@@ -40,6 +40,23 @@ iframe {
   color: #ffcd65;
 }
 
+table {
+  border: 2px solid rgb(40, 40, 40);
+  width: 100%;
+  border-collapse: collapse;
+}
+
+tr {
+  &:first-of-type {
+    background-color: rgb(50, 50, 50);
+  }
+}
+
+td {
+  border: 2px solid rgb(40, 40, 40);
+  padding: 10px;
+}
+
 iframe {
   width: 560px;
   height: 315px;

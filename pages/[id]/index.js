@@ -38,8 +38,6 @@ export async function getServerSideProps({ params }) {
     },
   });
 
-  console.log(entries);
-
   if (
     entries.results.length == 0 ||
     entries.results[0].properties.visible.checkbox == false
@@ -53,24 +51,45 @@ export async function getServerSideProps({ params }) {
     block_id: entries.results[0].id,
   });
 
-  const mappedBlocks = blocks.results.map((block) => {
+  const mappedBlocks = blocks.results.map(async (block) => {
     let filteredBlock = { ...block };
-    delete filteredBlock.object;
-    delete filteredBlock.id;
-    delete filteredBlock.parent;
-    delete filteredBlock.created_time;
-    delete filteredBlock.last_edited_time;
-    delete filteredBlock.created_by;
-    delete filteredBlock.last_edited_by;
-    delete filteredBlock.has_children;
-    delete filteredBlock.archived;
+
+    if (block.has_children) {
+      const blockId = block.id;
+      const response = await notion.blocks.children.list({
+        block_id: blockId,
+        page_size: 50,
+      });
+
+      const filteredChildren = response.results.map((item) => {
+        filterUnwantedOptions(item);
+        return item;
+      });
+      filteredBlock[block.type].children = filteredChildren;
+    }
+
+    function filterUnwantedOptions(obj) {
+      delete obj.object;
+      delete obj.id;
+      delete obj.parent;
+      delete obj.created_time;
+      delete obj.last_edited_time;
+      delete obj.created_by;
+      delete obj.last_edited_by;
+      // delete filteredBlock.has_children;
+      delete obj.archived;
+    }
+
+    filterUnwantedOptions(filteredBlock);
 
     return filteredBlock;
   });
 
+  const blocksResolved = await Promise.all(mappedBlocks);
+
   return {
     props: {
-      blocks: mappedBlocks,
+      blocks: blocksResolved,
       title: entries.results[0].properties.name.title[0].plain_text,
     },
   };
