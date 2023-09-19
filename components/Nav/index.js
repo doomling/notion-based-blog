@@ -27,17 +27,29 @@ export default function Nav() {
           </li>
           <div className={styles.rrss}>
             <li>
-              <a href="https://twitter.com/iamdoomling" target="_blank">
+              <a
+                href="https://twitter.com/iamdoomling"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <FontAwesomeIcon icon={faTwitter} />
               </a>
             </li>
             <li>
-              <a href="https://youtube.com/@iamdoomling" target="_blank">
+              <a
+                href="https://youtube.com/@iamdoomling"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <FontAwesomeIcon icon={faYoutube} />
               </a>
             </li>
             <li>
-              <a href="https://tiktok.com/@iamdoomling" target="_blank">
+              <a
+                href="https://tiktok.com/@iamdoomling"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <FontAwesomeIcon icon={faTiktok} />
               </a>
             </li>
