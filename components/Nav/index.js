@@ -1,7 +1,11 @@
 import Link from "next/link";
 import styles from "./style.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTwitter, faYoutube } from "@fortawesome/free-brands-svg-icons";
+import {
+  faTwitter,
+  faYoutube,
+  faTiktok,
+} from "@fortawesome/free-brands-svg-icons";
 
 export default function Nav() {
   return (
@@ -10,9 +14,8 @@ export default function Nav() {
         <Link href="/">
           <div className={styles.logoContainer}>
             <div className={styles.square}>
-              <img src="doomling.svg" />
+              <img src="logo-doom.svg" alt="doomling.dev" />
             </div>
-            <h1>Bel Rey</h1>
           </div>
         </Link>
         <div className={styles.social}>
@@ -22,16 +25,23 @@ export default function Nav() {
           <li>
             <Link href="/colaboraciones">Colaboraciones</Link>
           </li>
-          <li>
-            <a href="https://twitter.com/iamdoomling">
-              <FontAwesomeIcon icon={faTwitter} />
-            </a>
-          </li>
-          <li>
-            <a href="https://youtube.com/@iamdoomling">
-              <FontAwesomeIcon icon={faYoutube} />
-            </a>
-          </li>
+          <div className={styles.rrss}>
+            <li>
+              <a href="https://twitter.com/iamdoomling" target="_blank">
+                <FontAwesomeIcon icon={faTwitter} />
+              </a>
+            </li>
+            <li>
+              <a href="https://youtube.com/@iamdoomling" target="_blank">
+                <FontAwesomeIcon icon={faYoutube} />
+              </a>
+            </li>
+            <li>
+              <a href="https://tiktok.com/@iamdoomling" target="_blank">
+                <FontAwesomeIcon icon={faTiktok} />
+              </a>
+            </li>
+          </div>
         </div>
       </div>
     </nav>

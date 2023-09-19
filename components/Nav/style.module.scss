@@ -51,7 +51,6 @@
     height: 80px;
     align-items: center;
     .square {
-      width: 30px;
       height: 30px;
       border-radius: 5px;
       img {
@@ -64,6 +63,10 @@
   .social {
     display: flex;
     align-items: baseline;
+
+    @media only screen and (max-width: 768px) {
+      display: block;
+    }
 
     li {
       list-style: none;
@@ -111,6 +114,7 @@
     .innerNav {
       width: 90%;
       margin: auto;
+      display: block;
     }
   }
 }
