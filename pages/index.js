@@ -3,8 +3,10 @@ import styles from "../styles/Home.module.scss";
 import { Client } from "@notionhq/client";
 import Entry from "../components/Entry";
 import Nav from "../components/Nav";
-import Featured from "../components/Featured";
 import Substack from "../components/Substack";
+import Hero from "../components/Hero";
+import About from "../components/About";
+import BlogEntries from "../components/BlogEntries";
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
@@ -22,27 +24,17 @@ export default function Home({ entries }) {
         <link rel="icon" href="doomling.svg" />
       </Head>
       <Nav />
-      <div className={styles.container}>
-        {entries.length == 0 && "There are no entries"}
-        {entries.length != 0 && (
-          <>
-            <h1>Te doy la bienvenida a mi blog</h1>
-            <Featured />
-          </>
-        )}
-        <h2>Artículos</h2>
-        <section className={styles.entries}>
-          {entries.map((entry, key) => {
-            return <Entry key={key} data={entry} />;
-          })}
-        </section>
+      <main className={styles.container}>
+        <Hero />
+        <About />
+        <BlogEntries entries={entries.slice(0, 3)} />
         <Substack />
-      </div>
+      </main>
     </>
   );
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const entries = await notion.databases.query({
     database_id: process.env.NOTION_DATABASE_ID,
   });
