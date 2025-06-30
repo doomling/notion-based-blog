@@ -13,7 +13,7 @@ export default function Block({ data }) {
 
     const types = {
       paragraph: (paragraph) => <Paragraph blocks={paragraph.rich_text} />,
-      code: (code) => <Code language={code.language} blocks={code.rich_text} />,
+      //      code: (code) => <Code language={code.language} blocks={code.rich_text} />,
       heading_1: (heading) => <Heading1 blocks={heading.rich_text} />,
       heading_2: (heading) => <Heading2 blocks={heading.rich_text} />,
       heading_3: (heading) => <Heading3 blocks={heading.rich_text} />,

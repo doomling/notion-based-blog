@@ -7,7 +7,7 @@ export default function BlogEntries({ entries }) {
       {entries.length == 0 && "There are no entries"}
       {entries.length != 0 && (
         <>
-          <h2>Artículos</h2>
+          <h2>Blog</h2>
           <section className={styles.entries}>
             {entries.map((entry, key) => {
               return <Entry key={key} data={entry} />;

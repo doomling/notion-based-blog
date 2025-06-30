@@ -27,7 +27,7 @@ export default function Home({ entries }) {
       <main className={styles.container}>
         <Hero />
         <About />
-        <BlogEntries entries={entries.slice(0, 3)} />
+        <h2>Proyectos destacados</h2>
         <Substack />
       </main>
     </>

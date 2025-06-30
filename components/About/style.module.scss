@@ -1,9 +1,19 @@
 .about {
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr auto;
+  column-gap: 20px;
+  padding-top: 20px;
+
+  .description {
+    display: flex;
+    align-content: center;
+  }
 }
 
 .about img {
-  width: 20%;
+  padding: 10px;
+  width: 250px;
+  border: 1px dashed white;
+  border-radius: 7px;
 }
