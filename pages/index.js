@@ -7,6 +7,8 @@ import Substack from "../components/Substack";
 import Hero from "../components/Hero";
 import About from "../components/About";
 import BlogEntries from "../components/BlogEntries";
+import Courses from "../components/Courses";
+import Projects from "../components/Projects";
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
@@ -27,39 +29,10 @@ export default function Home({ entries }) {
       <main className={styles.container}>
         <Hero />
         <About />
-        <h2>Proyectos destacados</h2>
-        <Substack />
+        <Projects />
+        <Courses />
+        {/* <Substack /> */}
       </main>
     </>
   );
-}
-
-export async function getStaticProps() {
-  const entries = await notion.databases.query({
-    database_id: process.env.NOTION_DATABASE_ID,
-  });
-
-  const mappedEntries = entries.results
-    .map((entry) => {
-      const { properties } = entry;
-      const { name, description, tags, visible, niceUrl, hideInList } =
-        properties;
-
-      return {
-        name: name.title,
-        description: description.rich_text,
-        tags: tags.multi_select,
-        id: entry.id,
-        visible: visible.checkbox,
-        niceUrl: niceUrl.rich_text[0].plain_text,
-        hideInList: hideInList?.checkbox,
-      };
-    })
-    .filter((entry) => entry.visible == true && entry.hideInList == false);
-
-  return {
-    props: {
-      entries: mappedEntries ?? [],
-    },
-  };
 }

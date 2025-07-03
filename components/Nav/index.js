@@ -2,7 +2,7 @@ import Link from "next/link";
 import styles from "./style.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faTwitter,
+  faXTwitter,
   faYoutube,
   faTiktok,
 } from "@fortawesome/free-brands-svg-icons";
@@ -20,7 +20,10 @@ export default function Nav() {
         </Link>
         <div className={styles.social}>
           <li>
-            <Link href="/about">Sobre mi</Link>
+            <Link href="/recursos">Recursos</Link>
+          </li>
+          <li>
+            <Link href="/newsletter">Newsletter</Link>
           </li>
           <li>
             <Link href="/colaboraciones">Colaboraciones</Link>
@@ -32,7 +35,7 @@ export default function Nav() {
                 target="_blank"
                 rel="noreferrer"
               >
-                <FontAwesomeIcon icon={faTwitter} />
+                <FontAwesomeIcon icon={faXTwitter} />
               </a>
             </li>
             <li>

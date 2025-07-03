@@ -1,0 +1,17 @@
+.entries {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 20px;
+  row-gap: 20px;
+}
+
+.item {
+  border: 1px solid white;
+  border-radius: 10px;
+  overflow: hidden;
+  .name {
+    padding: 0 10px;
+
+    background-color: black;
+  }
+}

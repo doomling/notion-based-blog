@@ -1,16 +1,9 @@
 .hero {
   padding: 20px;
-  background-image: url("/bg-hero.png");
+  background-image: url("/bg-cat.png");
+  background-size: cover;
   h1 {
     font-size: 3em;
     width: 70%;
-  }
-
-  button {
-    border: 1px solid white;
-    color: white;
-    padding: 10px;
-    background-color: transparent;
-    margin: 20px 10px 0 0;
   }
 }
