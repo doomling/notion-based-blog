@@ -31,8 +31,8 @@ export default function Resources({ entries }) {
           <ul>
             {entries.map((data, i) => {
               return (
-                <li>
-                  <Link key={i} href={`/${data.niceUrl}`}>
+                <li key={i}>
+                  <Link href={`/${data.niceUrl}`}>
                     {data.name[0].plain_text}
                   </Link>
                 </li>
