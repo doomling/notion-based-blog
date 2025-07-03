@@ -1,0 +1,17 @@
+.formContainer {
+  width: 100%;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  input {
+    padding: 5px;
+    width: 200px;
+  }
+
+  textarea {
+    width: 50%;
+  }
+}

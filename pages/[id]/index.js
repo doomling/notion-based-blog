@@ -2,25 +2,29 @@ import { Client } from "@notionhq/client";
 import Link from "next/link";
 import Block from "../../components/Block";
 import Nav from "../../components/Nav";
-import Substack from "../../components/Substack";
 import styles from "../../styles/Home.module.scss";
+import { useRouter } from "next/navigation";
+
+import DoodleStarsBackground from "../../components/StarsBackground";
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
 export default function Post({ blocks, title }) {
+  const router = useRouter();
+
   return (
     <>
       <Nav />
       <div className={styles.container}>
         <div className={styles.back}>
-          <Link href="/">← Volver</Link>
+          <div onClick={() => router.back()}>← Volver</div>
         </div>
         <div className={styles.articleContainer}>
           <h1>{title}</h1>
           {blocks.map((block, key) => {
             return <Block data={block} key={key} />;
           })}
-          <Substack />
+          <DoodleStarsBackground />
         </div>
       </div>
     </>

@@ -1,9 +1,17 @@
+:root {
+  --red: #b40000;
+  --yellow: #ffda2d;
+  --black: #000;
+  --border: 20px;
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
-  background-color: #14101b;
-  color: #fff;
+  /* background-color: #1d1d1d; */
+  /* background-color: #14101b; */
+  color: #f8faff;
 }
 
 a {

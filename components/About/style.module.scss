@@ -1,0 +1,35 @@
+.about {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: 20px;
+  padding-top: 20px;
+
+  h2 {
+    margin: 0;
+  }
+
+  .description {
+    display: flex;
+    align-content: center;
+  }
+}
+
+.about img {
+  align-self: center;
+  padding: 10px;
+  width: 250px;
+  border: 1px double var(--yellow);
+  border-radius: 7px;
+  filter: sepia(0.7);
+}
+
+@media only screen and (max-width: 768px) {
+  .about {
+    grid-template-columns: 1fr;
+
+    img {
+      display: none;
+    }
+  }
+}

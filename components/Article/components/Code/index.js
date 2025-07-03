@@ -1,6 +1,5 @@
 import styles from "./style.module.scss";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { darcula } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
 export default function Code({ language, blocks }) {
   function parseAnnotations(text) {
@@ -15,7 +14,7 @@ export default function Code({ language, blocks }) {
       </div> */}
       <span className={styles.label}>{language} code</span>
       <code className={styles.code}>
-        <SyntaxHighlighter language={language} style={darcula}>
+        <SyntaxHighlighter language={language}>
           {blocks.map((text) => {
             return parseAnnotations(text);
           })}

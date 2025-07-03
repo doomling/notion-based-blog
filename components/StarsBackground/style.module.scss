@@ -1,0 +1,26 @@
+.starsContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #1d1d1d; /* fondo oscuro */
+  z-index: -1;
+}
+.estrella {
+  position: absolute;
+  color: var(--yellow);
+  opacity: 0;
+  animation: flotar 10s infinite ease-in-out alternate;
+}
+@keyframes flotar {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-100px) translateX(50px) rotate(360deg);
+    opacity: 1;
+  }
+}

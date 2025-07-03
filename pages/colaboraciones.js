@@ -1,12 +1,7 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.scss";
-import { Client } from "@notionhq/client";
-import Entry from "../components/Entry";
 import Nav from "../components/Nav";
-import Featured from "../components/Featured";
-import Substack from "../components/Substack";
-
-const notion = new Client({ auth: process.env.NOTION_TOKEN });
+import DoodleStarsBackground from "../components/StarsBackground";
 
 export default function Home({ entries }) {
   return (
@@ -50,8 +45,8 @@ export default function Home({ entries }) {
           Para contacto, dudas y consultas me pueden encontrar en{" "}
           <a href="mailto:belenrey@gmail.com">belenrey@gmail.com</a>
         </p>
-        <Substack />
       </div>
+      <DoodleStarsBackground />
     </>
   );
 }
