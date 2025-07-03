@@ -5,6 +5,7 @@ import Nav from "../components/Nav";
 import Link from "next/link";
 import Courses from "../components/Courses";
 import Substack from "../components/Substack";
+import DoodleStarsBackground from "../components/StarsBackground";
 
 export default function Newsletter() {
   return (
@@ -21,7 +22,8 @@ export default function Newsletter() {
         <link rel="icon" href="doomling.svg" />
       </Head>
       <Nav />
-      <Substack />{" "}
+      <Substack />
+      <DoodleStarsBackground />
     </>
   );
 }

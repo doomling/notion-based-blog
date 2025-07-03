@@ -5,12 +5,14 @@ export default function Boxes({ items }) {
     <section className={styles.entries}>
       {items.map((item, i) => {
         return (
-          <div className={styles.item} key={i}>
-            <img src={item.img} />
-            <div className={styles.name}>
-              <h3>{item.name}</h3>
+          <a href={item.link} target="_blank">
+            <div className={styles.item} key={i}>
+              <img src={item.img} />
+              <div className={styles.name}>
+                <h3>{item.name}</h3>
+              </div>
             </div>
-          </div>
+          </a>
         );
       })}
     </section>

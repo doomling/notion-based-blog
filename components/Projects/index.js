@@ -8,14 +8,17 @@ export default function Projects() {
     {
       name: "Galio",
       img: "projects_1.png",
+      link: "https://proof.galio.app/?v=1",
     },
     {
       name: "Te lo explico com gatitos",
       img: "projects_2.png",
+      link: "https://teloexplicocongatitos.com",
     },
     {
       name: "Diseño y planificación de cursos técnicos",
       img: "projects_3.png",
+      link: "https://codigofacilito.com",
     },
   ];
   return (
@@ -30,7 +33,11 @@ export default function Projects() {
           el aula
         </li>
         <h3>¿Necesitás estos servicios?</h3>
-        <Button text="Contactame" />
+        <div className={styles.buttonContainer}>
+          <a href="mailto:belenrey@gmail.com">
+            <Button primary text="Contactame" />
+          </a>
+        </div>
       </div>
       <h2>Proyectos destacados:</h2>
       <Boxes items={projectList} />

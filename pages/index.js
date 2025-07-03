@@ -1,18 +1,16 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.scss";
 import { Client } from "@notionhq/client";
-import Entry from "../components/Entry";
 import Nav from "../components/Nav";
-import Substack from "../components/Substack";
 import Hero from "../components/Hero";
 import About from "../components/About";
-import BlogEntries from "../components/BlogEntries";
 import Courses from "../components/Courses";
 import Projects from "../components/Projects";
+import DoodleStarsBackground from "../components/StarsBackground";
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
-export default function Home({ entries }) {
+export default function Home() {
   return (
     <>
       <Head>
@@ -27,6 +25,7 @@ export default function Home({ entries }) {
       </Head>
       <Nav />
       <main className={styles.container}>
+        <DoodleStarsBackground />
         <Hero />
         <About />
         <Projects />

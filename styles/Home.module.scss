@@ -3,12 +3,13 @@
   width: 100%;
   margin: auto;
   padding-bottom: 40px;
+  position: relative;
   img {
     width: 100%;
   }
   p {
     a {
-      color: #7d5aed;
+      color: var(--yellow);
     }
   }
 }

@@ -4,6 +4,7 @@ import { Client } from "@notionhq/client";
 import Nav from "../components/Nav";
 import Link from "next/link";
 import Courses from "../components/Courses";
+import DoodleStarsBackground from "../components/StarsBackground";
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
@@ -40,6 +41,7 @@ export default function Resources({ entries }) {
           </ul>
         </p>
         <Courses />
+        <DoodleStarsBackground />
       </div>
     </>
   );

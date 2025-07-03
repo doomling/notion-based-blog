@@ -19,7 +19,7 @@
   align-self: center;
   padding: 10px;
   width: 250px;
-  border: 1px double white;
+  border: 1px double var(--yellow);
   border-radius: 7px;
-  filter: grayscale(1);
+  filter: sepia(0.7);
 }

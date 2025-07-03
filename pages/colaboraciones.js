@@ -1,6 +1,7 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.scss";
 import Nav from "../components/Nav";
+import DoodleStarsBackground from "../components/StarsBackground";
 
 export default function Home({ entries }) {
   return (
@@ -45,6 +46,7 @@ export default function Home({ entries }) {
           <a href="mailto:belenrey@gmail.com">belenrey@gmail.com</a>
         </p>
       </div>
+      <DoodleStarsBackground />
     </>
   );
 }

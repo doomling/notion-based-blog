@@ -4,6 +4,7 @@ import Block from "../../components/Block";
 import Nav from "../../components/Nav";
 import Substack from "../../components/Substack";
 import styles from "../../styles/Home.module.scss";
+import DoodleStarsBackground from "../../components/StarsBackground";
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
@@ -20,7 +21,7 @@ export default function Post({ blocks, title }) {
           {blocks.map((block, key) => {
             return <Block data={block} key={key} />;
           })}
-          <Substack />
+          <DoodleStarsBackground />
         </div>
       </div>
     </>
