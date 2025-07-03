@@ -1,7 +1,7 @@
 import styles from "./style.module.scss";
 import Boxes from "../Boxes";
 import Button from "../Button";
-import { DEV_CLIENT_PAGES_MANIFEST } from "next/dist/shared/lib/constants";
+import Contact from "../Contact";
 
 export default function Projects() {
   const projectList = [
@@ -34,9 +34,10 @@ export default function Projects() {
         </li>
         <h3>¿Necesitás estos servicios?</h3>
         <div className={styles.buttonContainer}>
-          <a href="mailto:belenrey@gmail.com">
-            <Button primary text="Contactame" />
+          <a href="mailto: belenrey@gmail.com">
+            <Button text="contactame" />
           </a>
+          {/* <Contact /> */}
         </div>
       </div>
       <h2>Proyectos destacados:</h2>
