@@ -40,7 +40,7 @@ export default function Projects() {
           {/* <Contact /> */}
         </div>
       </div>
-      <h2>Proyectos destacados:</h2>
+      <h2 id="proyectos">Proyectos destacados:</h2>
       <Boxes items={projectList} />
       {/* <Button text="Más proyectos donde combino tecnología + docencia + diseño" /> */}
     </section>

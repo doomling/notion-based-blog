@@ -12,6 +12,7 @@ body {
   /* background-color: #1d1d1d; */
   /* background-color: #14101b; */
   color: #f8faff;
+  scroll-behavior: smooth;
 }
 
 a {
