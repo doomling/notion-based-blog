@@ -23,7 +23,7 @@ export default function Projects() {
   ];
   return (
     <section>
-      <h2>Trabajemos juntos</h2>
+      <h2 id="proyectos">Trabajemos juntos</h2>
       <div>
         <h3>Tengo amplia experiencia en:</h3>
         <li>Desarollo fullstack, particularmente en productos financieros</li>
@@ -40,7 +40,7 @@ export default function Projects() {
           {/* <Contact /> */}
         </div>
       </div>
-      <h2 id="proyectos">Proyectos destacados:</h2>
+      <h2>Proyectos destacados:</h2>
       <Boxes items={projectList} />
       {/* <Button text="Más proyectos donde combino tecnología + docencia + diseño" /> */}
     </section>
