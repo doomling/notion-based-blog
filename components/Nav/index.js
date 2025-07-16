@@ -40,7 +40,7 @@ export default function Nav() {
             </li>
             <li>
               <a
-                href="https://youtube.com/@iamdoomling"
+                href="https://www.youtube.com/@doomlingdev"
                 target="_blank"
                 rel="noreferrer"
               >
