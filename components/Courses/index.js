@@ -31,7 +31,7 @@ export default function Courses() {
   ];
   return (
     <section>
-      <h2>Estudía conmigo:</h2>
+      <h2>Aprender conmigo:</h2>
       <Boxes items={courseList} />
     </section>
   );

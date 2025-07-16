@@ -26,7 +26,7 @@ export default function Projects() {
       <h2 id="proyectos">Trabajemos juntos</h2>
       <div>
         <h3>Tengo amplia experiencia en:</h3>
-        <li>Desarollo fullstack, particularmente en productos financieros</li>
+        <li>Desarrollo fullstack, particularmente en productos financieros</li>
         <li>Armado y planeación de cursos y clases</li>
         <li>
           Creación de contenido y recursos educativos tanto para redes como para
