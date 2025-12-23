@@ -1,6 +1,6 @@
 :root {
-  --red: #b40000;
-  --yellow: #ffda2d;
+  --red: #1B8E3F;
+  --yellow: #90EE90;
   --black: #000;
   --border: 20px;
 }
@@ -46,7 +46,7 @@ iframe {
 }
 
 .yellow {
-  color: #ffcd65;
+  color: #90EE90;
 }
 
 table {
