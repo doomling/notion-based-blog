@@ -23,6 +23,9 @@ export default function Nav() {
             <Link href="/recursos">Recursos</Link>
           </li>
           <li>
+            <Link href="/kits">Kits</Link>
+          </li>
+          <li>
             <a
               href="https://newsletter.doomling.dev"
               target="_blank"
