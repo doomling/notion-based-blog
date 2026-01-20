@@ -10,7 +10,7 @@ import { hasUserPurchasedKit } from "../../lib/mongodb";
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
-export default function KitDetail({ kit, previewBlocks, hasAccess }) {
+export default function KitDetail({ kit, blocks, hasAccess }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -73,10 +73,10 @@ export default function KitDetail({ kit, previewBlocks, hasAccess }) {
           <h1>{kit.name}</h1>
           <p className={kitStyles.description}>{kit.description}</p>
 
-          {/* Preview content */}
-          {previewBlocks.map((block, key) => (
-            <Block data={block} key={key} />
-          ))}
+          {/* Contenido del kit: solo visible si el usuario tiene acceso */}
+          {hasAccess &&
+            blocks &&
+            blocks.map((block, key) => <Block data={block} key={key} />)}
 
           {/* Paywall */}
           {!hasAccess && (
@@ -164,7 +164,6 @@ export async function getServerSideProps({ params, query }) {
     description: properties.description?.rich_text?.[0]?.plain_text || "",
     price: properties.price?.number || 0,
     niceUrl: properties.niceUrl?.rich_text?.[0]?.plain_text || "",
-    previewBlockCount: properties.previewBlockCount?.number || 3,
   };
 
   // Check if user has access via email from query (set after payment)
@@ -173,45 +172,46 @@ export async function getServerSideProps({ params, query }) {
     ? await hasUserPurchasedKit(userEmail, entry.id)
     : false;
 
-  // Fetch blocks
-  const blocks = await notion.blocks.children.list({
-    block_id: entry.id,
-  });
+  // Solo traemos el contenido completo del kit si el usuario tiene acceso
+  let blocksResolved = [];
 
-  const mappedBlocks = await Promise.all(
-    blocks.results.map(async (block) => {
-      let filteredBlock = { ...block };
+  if (hasAccess) {
+    const blocks = await notion.blocks.children.list({
+      block_id: entry.id,
+    });
 
-      if (block.has_children) {
-        const response = await notion.blocks.children.list({
-          block_id: block.id,
-          page_size: 50,
-        });
-        filteredBlock[block.type].children = response.results;
-      }
+    const mappedBlocks = await Promise.all(
+      blocks.results.map(async (block) => {
+        let filteredBlock = { ...block };
 
-      delete filteredBlock.object;
-      delete filteredBlock.id;
-      delete filteredBlock.parent;
-      delete filteredBlock.created_time;
-      delete filteredBlock.last_edited_time;
-      delete filteredBlock.created_by;
-      delete filteredBlock.last_edited_by;
-      delete filteredBlock.archived;
+        if (block.has_children) {
+          const response = await notion.blocks.children.list({
+            block_id: block.id,
+            page_size: 50,
+          });
+          filteredBlock[block.type].children = response.results;
+        }
 
-      return filteredBlock;
-    })
-  );
+        delete filteredBlock.object;
+        delete filteredBlock.id;
+        delete filteredBlock.parent;
+        delete filteredBlock.created_time;
+        delete filteredBlock.last_edited_time;
+        delete filteredBlock.created_by;
+        delete filteredBlock.last_edited_by;
+        delete filteredBlock.archived;
 
-  // Only show preview blocks if no access
-  const previewBlocks = hasAccess
-    ? mappedBlocks
-    : mappedBlocks.slice(0, kit.previewBlockCount);
+        return filteredBlock;
+      })
+    );
+
+    blocksResolved = mappedBlocks;
+  }
 
   return {
     props: {
       kit,
-      previewBlocks,
+      blocks: blocksResolved,
       hasAccess,
     },
   };
