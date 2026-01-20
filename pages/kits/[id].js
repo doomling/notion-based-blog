@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Client } from "@notionhq/client";
 import { useRouter } from "next/router";
 import Nav from "../../components/Nav";
@@ -6,20 +6,49 @@ import Block from "../../components/Block";
 import styles from "../../styles/Home.module.scss";
 import kitStyles from "../../styles/Kit.module.scss";
 import DoodleStarsBackground from "../../components/StarsBackground";
-import { hasUserPurchasedKit } from "../../lib/mongodb";
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
-export default function KitDetail({ kit, blocks, hasAccess }) {
+export default function KitDetail({ kit }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [hasAccess, setHasAccess] = useState(false);
+  const [blocks, setBlocks] = useState([]);
+  const [checkingAccess, setCheckingAccess] = useState(true);
 
   const formattedPrice = new Intl.NumberFormat("es-AR", {
     style: "currency",
     currency: "ARS",
   }).format(kit.price);
+
+  // Check access on mount and when email changes in query
+  useEffect(() => {
+    const checkAccess = async () => {
+      const userEmail = router.query.email;
+      if (userEmail) {
+        try {
+          const response = await fetch(`/api/check-kit-access?email=${encodeURIComponent(userEmail)}&kitId=${kit.id}`);
+          const data = await response.json();
+          if (data.hasAccess) {
+            setHasAccess(true);
+            // Fetch blocks if user has access
+            const blocksResponse = await fetch(`/api/kit-blocks?kitId=${kit.id}`);
+            const blocksData = await blocksResponse.json();
+            setBlocks(blocksData.blocks || []);
+          }
+        } catch (err) {
+          console.error("Error checking access:", err);
+        }
+      }
+      setCheckingAccess(false);
+    };
+
+    if (router.isReady) {
+      checkAccess();
+    }
+  }, [router.isReady, router.query.email, kit.id]);
 
   const handlePurchase = async () => {
     // Validate email
@@ -73,13 +102,20 @@ export default function KitDetail({ kit, blocks, hasAccess }) {
           <h1>{kit.name}</h1>
           <p className={kitStyles.description}>{kit.description}</p>
 
+          {/* Loading state while checking access */}
+          {checkingAccess && (
+            <div style={{ textAlign: "center", padding: "2rem", color: "#aaa" }}>
+              Verificando acceso...
+            </div>
+          )}
+
           {/* Contenido del kit: solo visible si el usuario tiene acceso */}
-          {hasAccess &&
-            blocks &&
-            blocks.map((block, key) => <Block data={block} key={key} />)}
+          {!checkingAccess && hasAccess && blocks && blocks.length > 0 && (
+            blocks.map((block, key) => <Block data={block} key={key} />)
+          )}
 
           {/* Paywall */}
-          {!hasAccess && (
+          {!checkingAccess && !hasAccess && (
             <div className={kitStyles.paywall}>
               <div className={kitStyles.paywallContent}>
                 <div className={kitStyles.lockIcon}>🔒</div>
@@ -125,7 +161,33 @@ export default function KitDetail({ kit, blocks, hasAccess }) {
   );
 }
 
-export async function getServerSideProps({ params, query }) {
+export async function getStaticPaths() {
+  // Fetch all kits to generate paths
+  const entries = await notion.databases.query({
+    database_id: process.env.NOTION_KITS_DATABASE_ID,
+  });
+
+  const paths = entries.results
+    .map((entry) => {
+      const { properties } = entry;
+      const urlProp = properties.niceUrl || properties.NiceUrl || properties.nice_url || properties.url;
+      const nameProp = properties.name || properties.Name || properties.Título || properties.titulo;
+      
+      const niceUrl = urlProp?.rich_text?.[0]?.plain_text || urlProp?.title?.[0]?.plain_text || "";
+      const nameText = nameProp?.title?.[0]?.plain_text || "";
+      const slug = niceUrl || nameText.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "") || entry.id;
+      
+      return slug ? { params: { id: slug } } : null;
+    })
+    .filter(Boolean);
+
+  return {
+    paths,
+    fallback: "blocking", // Generate pages on-demand for new kits
+  };
+}
+
+export async function getStaticProps({ params }) {
   // Get all entries and find by niceUrl or ID
   const allEntries = await notion.databases.query({
     database_id: process.env.NOTION_KITS_DATABASE_ID,
@@ -166,53 +228,10 @@ export async function getServerSideProps({ params, query }) {
     niceUrl: properties.niceUrl?.rich_text?.[0]?.plain_text || "",
   };
 
-  // Check if user has access via email from query (set after payment)
-  const userEmail = query.email;
-  const hasAccess = userEmail
-    ? await hasUserPurchasedKit(userEmail, entry.id)
-    : false;
-
-  // Solo traemos el contenido completo del kit si el usuario tiene acceso
-  let blocksResolved = [];
-
-  if (hasAccess) {
-    const blocks = await notion.blocks.children.list({
-      block_id: entry.id,
-    });
-
-    const mappedBlocks = await Promise.all(
-      blocks.results.map(async (block) => {
-        let filteredBlock = { ...block };
-
-        if (block.has_children) {
-          const response = await notion.blocks.children.list({
-            block_id: block.id,
-            page_size: 50,
-          });
-          filteredBlock[block.type].children = response.results;
-        }
-
-        delete filteredBlock.object;
-        delete filteredBlock.id;
-        delete filteredBlock.parent;
-        delete filteredBlock.created_time;
-        delete filteredBlock.last_edited_time;
-        delete filteredBlock.created_by;
-        delete filteredBlock.last_edited_by;
-        delete filteredBlock.archived;
-
-        return filteredBlock;
-      })
-    );
-
-    blocksResolved = mappedBlocks;
-  }
-
   return {
     props: {
       kit,
-      blocks: blocksResolved,
-      hasAccess,
     },
+    revalidate: 300,
   };
 }

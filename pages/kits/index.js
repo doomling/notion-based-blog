@@ -52,7 +52,7 @@ export default function Kits({ kits, error }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   try {
     if (!process.env.NOTION_KITS_DATABASE_ID) {
       return {
@@ -60,6 +60,7 @@ export async function getServerSideProps() {
           kits: [],
           error: "NOTION_KITS_DATABASE_ID no está configurado",
         },
+        revalidate: 300,
       };
     }
 
@@ -101,6 +102,7 @@ export async function getServerSideProps() {
       props: {
         kits: kits ?? [],
       },
+      revalidate: 300,
     };
   } catch (error) {
     console.error("Error fetching kits:", error);
@@ -109,6 +111,7 @@ export async function getServerSideProps() {
         kits: [],
         error: error.message || "Error desconocido al cargar los kits",
       },
+      revalidate: 300,
     };
   }
 }
