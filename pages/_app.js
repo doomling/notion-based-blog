@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { Open_Sans } from "next/font/google";
 import Script from "next/script";
 import { EntriesProvider } from "../lib/EntriesContext";
+import Loading from "../components/Loading";
 
 // If loading a variable font, you don't need to specify the font weight
 const openSans = Open_Sans({
@@ -30,11 +31,11 @@ function MyApp({ Component, pageProps }) {
                 `}
       </Script>
       <EntriesProvider entries={pageProps.entries ?? []}></EntriesProvider>
+      <Loading />
       <main className={openSans.className}>
         <Component {...pageProps} />
         <Analytics />
       </main>
-      <EntriesProvider />
     </>
   );
 }
