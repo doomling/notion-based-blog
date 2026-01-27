@@ -13,6 +13,7 @@ body {
   /* background-color: #14101b; */
   color: #f8faff;
   scroll-behavior: smooth;
+  font-family: 'Open Sans', sans-serif;
 }
 
 a {
