@@ -22,9 +22,9 @@ export default function Nav() {
           <li>
             <Link href="/recursos">Recursos</Link>
           </li>
-          <li>
+          {/* <li>
             <Link href="/kits">Kits</Link>
-          </li>
+          </li> */}
           <li>
             <a
               href="https://newsletter.doomling.dev"
