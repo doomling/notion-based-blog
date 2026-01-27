@@ -23,10 +23,27 @@ export default function KitDetail({ kit }) {
     currency: "ARS",
   }).format(kit.price);
 
-  // Check access on mount and when email changes in query
+  const [restoreEmail, setRestoreEmail] = useState("");
+  const [restoreLoading, setRestoreLoading] = useState(false);
+  const [restoreError, setRestoreError] = useState("");
+  const [showRestoreModal, setShowRestoreModal] = useState(false);
+
+  // Check access on mount - check localStorage first, then URL params
   useEffect(() => {
     const checkAccess = async () => {
-      const userEmail = router.query.email;
+      setCheckingAccess(true); // Ensure we're in loading state
+      
+      // Check localStorage first for persistent access
+      const storedEmail = localStorage.getItem("userEmail");
+      // Fallback to URL params (for initial redirect after payment)
+      const urlEmail = router.query.email;
+      const userEmail = storedEmail || urlEmail;
+
+      // Store email from URL to localStorage if present
+      if (urlEmail && !storedEmail) {
+        localStorage.setItem("userEmail", urlEmail);
+      }
+
       if (userEmail) {
         try {
           const response = await fetch(`/api/check-kit-access?email=${encodeURIComponent(userEmail)}&kitId=${kit.id}`);
@@ -37,18 +54,80 @@ export default function KitDetail({ kit }) {
             const blocksResponse = await fetch(`/api/kit-blocks?kitId=${kit.id}`);
             const blocksData = await blocksResponse.json();
             setBlocks(blocksData.blocks || []);
+          } else {
+            setHasAccess(false);
           }
         } catch (err) {
           console.error("Error checking access:", err);
+          setHasAccess(false);
         }
+      } else {
+        setHasAccess(false);
       }
+      
+      // Only set checkingAccess to false after everything is done
       setCheckingAccess(false);
     };
 
     if (router.isReady) {
       checkAccess();
+    } else {
+      // Keep checking while router is not ready
+      setCheckingAccess(true);
     }
   }, [router.isReady, router.query.email, kit.id]);
+
+  const handleRestoreAccess = async () => {
+    if (!restoreEmail || !restoreEmail.includes("@")) {
+      setRestoreError("Por favor ingresa un email válido");
+      return;
+    }
+
+    setRestoreLoading(true);
+    setRestoreError("");
+
+    try {
+      const response = await fetch("/api/restore-access", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: restoreEmail }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Error al restaurar acceso");
+      }
+
+      if (data.hasPurchases) {
+        // Store email in localStorage
+        localStorage.setItem("userEmail", data.email);
+        setShowRestoreModal(false);
+        setRestoreEmail("");
+
+        // Check if current kit is in purchased kits
+        if (data.purchasedKits.includes(kit.id)) {
+          setHasAccess(true);
+          // Fetch blocks
+          const blocksResponse = await fetch(`/api/kit-blocks?kitId=${kit.id}`);
+          const blocksData = await blocksResponse.json();
+          setBlocks(blocksData.blocks || []);
+        } else {
+          // Show message that they have access to other kits
+          alert(`Acceso restaurado. Tienes acceso a ${data.purchasedKits.length} kit(s).`);
+          // Reload to check access for current kit
+          window.location.reload();
+        }
+      } else {
+        setRestoreError(data.message || "No se encontraron compras para este email");
+      }
+    } catch (error) {
+      console.error("Restore access error:", error);
+      setRestoreError(error.message || "Ocurrió un error al restaurar acceso");
+    } finally {
+      setRestoreLoading(false);
+    }
+  };
 
   const handlePurchase = async () => {
     // Validate email
@@ -114,8 +193,8 @@ export default function KitDetail({ kit }) {
             blocks.map((block, key) => <Block data={block} key={key} />)
           )}
 
-          {/* Paywall */}
-          {!checkingAccess && !hasAccess && (
+          {/* Paywall - solo se muestra si NO tiene acceso */}
+          {!checkingAccess && hasAccess === false && (
             <div className={kitStyles.paywall}>
               <div className={kitStyles.paywallContent}>
                 <div className={kitStyles.lockIcon}>🔒</div>
@@ -150,6 +229,61 @@ export default function KitDetail({ kit }) {
                 <p className={kitStyles.secureNote}>
                   Pago seguro con Mercado Pago
                 </p>
+                <div className={kitStyles.restoreAccess}>
+                  <button
+                    onClick={() => setShowRestoreModal(true)}
+                    className={kitStyles.restoreButton}
+                  >
+                    ¿Ya compraste? Restaurar acceso
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Restore Access Modal */}
+          {showRestoreModal && (
+            <div className={kitStyles.modalOverlay} onClick={() => setShowRestoreModal(false)}>
+              <div className={kitStyles.modalContent} onClick={(e) => e.stopPropagation()}>
+                <h3>Restaurar Acceso</h3>
+                <p>Ingresá el email con el que realizaste la compra</p>
+                <input
+                  type="email"
+                  placeholder="Tu email"
+                  value={restoreEmail}
+                  onChange={(e) => {
+                    setRestoreEmail(e.target.value);
+                    setRestoreError("");
+                  }}
+                  className={kitStyles.emailInput}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      handleRestoreAccess();
+                    }
+                  }}
+                />
+                {restoreError && (
+                  <p className={kitStyles.errorMessage}>{restoreError}</p>
+                )}
+                <div className={kitStyles.modalButtons}>
+                  <button
+                    onClick={handleRestoreAccess}
+                    disabled={restoreLoading || !restoreEmail}
+                    className={kitStyles.buyButton}
+                  >
+                    {restoreLoading ? "Verificando..." : "Restaurar"}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowRestoreModal(false);
+                      setRestoreEmail("");
+                      setRestoreError("");
+                    }}
+                    className={kitStyles.cancelButton}
+                  >
+                    Cancelar
+                  </button>
+                </div>
               </div>
             </div>
           )}

@@ -112,3 +112,89 @@
   font-size: 0.85rem;
   color: #666;
 }
+
+.restoreAccess {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #333;
+}
+
+.restoreButton {
+  background: transparent;
+  border: 1px solid #4CAF50;
+  color: #4CAF50;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+
+  &:hover {
+    background: rgba(76, 175, 80, 0.1);
+    border-color: #5CBF60;
+  }
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  backdrop-filter: blur(4px);
+}
+
+.modalContent {
+  background: linear-gradient(145deg, #1a1a1a 0%, #111 100%);
+  border: 2px solid #4CAF50;
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+
+  h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.5rem;
+    color: #fff;
+  }
+
+  > p {
+    color: #aaa;
+    margin: 0 0 1.5rem;
+    font-size: 0.95rem;
+  }
+}
+
+.modalButtons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+
+  button {
+    flex: 1;
+  }
+}
+
+.cancelButton {
+  padding: 16px 32px;
+  background: transparent;
+  border: 1px solid #666;
+  border-radius: 8px;
+  color: #aaa;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: #888;
+    color: #fff;
+  }
+}

@@ -15,6 +15,11 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
+  // Get base URL from request headers or environment variable
+  const protocol = req.headers['x-forwarded-proto'] || (req.headers.host?.includes('localhost') ? 'http' : 'https');
+  const host = req.headers.host || req.headers['x-forwarded-host'];
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || (host ? `${protocol}://${host}` : 'http://localhost:3000');
+
   try {
     const preference = new Preference(client);
 
@@ -31,13 +36,13 @@ export default async function handler(req, res) {
         ],
         payer: email ? { email } : undefined,
         back_urls: {
-          success: `${process.env.NEXT_PUBLIC_BASE_URL}/kits/success?kit=${kitId}`,
-          failure: `${process.env.NEXT_PUBLIC_BASE_URL}/kits/failure`,
-          pending: `${process.env.NEXT_PUBLIC_BASE_URL}/kits/pending`,
+          success: `${baseUrl}/kits/success?kit=${kitId}`,
+          failure: `${baseUrl}/kits/failure`,
+          pending: `${baseUrl}/kits/pending`,
         },
         auto_return: "approved",
         external_reference: kitId,
-        notification_url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/webhook`,
+        notification_url: `${baseUrl}/api/webhook`,
       },
     });
 

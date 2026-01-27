@@ -19,6 +19,8 @@ export default function Success() {
         .then((res) => res.json())
         .then((data) => {
           if (data.email) {
+            // Store email in localStorage for persistent access
+            localStorage.setItem("userEmail", data.email);
             // Redirect to kit with email for access check
             router.push(`/kits/${kitId}?email=${encodeURIComponent(data.email)}`);
           } else {
