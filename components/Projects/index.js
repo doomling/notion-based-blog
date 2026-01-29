@@ -11,7 +11,7 @@ export default function Projects() {
       link: "https://proof.galio.app/?v=1",
     },
     {
-      name: "Te lo explico com gatitos",
+      name: "Te lo explico con gatitos",
       img: "projects_2.png",
       link: "https://teloexplicocongatitos.org",
     },

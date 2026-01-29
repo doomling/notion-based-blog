@@ -31,7 +31,7 @@ export default function Resources({ entries }) {
           <ul>
             {entries.map((data, i) => {
               return (
-                <li key={i}>
+                <li className={styles.link} key={i}>
                   <Link href={`/${data.niceUrl}`}>
                     {data.name[0].plain_text}
                   </Link>

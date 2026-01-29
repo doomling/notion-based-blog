@@ -116,27 +116,9 @@ export default function KitDetail({ kit }) {
                 <h2>Contenido Premium</h2>
                 <p>Obtené acceso completo a este kit</p>
                 <div className={kitStyles.price}>{formattedPrice}</div>
-                <input
-                  type="email"
-                  placeholder="Tu email"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    setError("");
-                  }}
-                  className={kitStyles.emailInput}
-                  onKeyPress={(e) => {
-                    if (e.key === "Enter") {
-                      handlePurchase();
-                    }
-                  }}
-                />
-                {error && (
-                  <p className={kitStyles.errorMessage}>{error}</p>
-                )}
                 <button
                   onClick={handlePurchase}
-                  disabled={loading || !email}
+                //   disabled={loading || !email}
                   className={kitStyles.buyButton}
                 >
                   {loading ? "Procesando..." : "Comprar ahora"}

@@ -5,6 +5,7 @@ import {
   faXTwitter,
   faYoutube,
   faTiktok,
+  faInstagram
 } from "@fortawesome/free-brands-svg-icons";
 
 export default function Nav() {
@@ -49,6 +50,15 @@ export default function Nav() {
             </li>
             <li>
               <a
+                href="https://instagram.com/doomling.dev"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <FontAwesomeIcon icon={faInstagram} />
+              </a>
+            </li>
+            <li>
+              <a
                 href="https://www.youtube.com/@doomlingdev"
                 target="_blank"
                 rel="noreferrer"
@@ -58,7 +68,7 @@ export default function Nav() {
             </li>
             <li>
               <a
-                href="https://tiktok.com/@iamdoomling"
+                href="https://tiktok.com/@doomling.dev"
                 target="_blank"
                 rel="noreferrer"
               >
