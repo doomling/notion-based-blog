@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: transparent;
+  background: rgb(7, 18, 7);
 }
 
 .waveContainer {
@@ -40,7 +40,7 @@
   filter: blur(35px);
   transform: rotate(-25deg);
   animation: waveAnimation 10s ease-in-out infinite;
-  
+    
   &:nth-child(1) {
     top: -10%;
     animation-delay: 0s;
