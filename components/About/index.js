@@ -15,7 +15,7 @@ export default function About() {
           <li> 📚 Docente en bootcamps, talleres y charlas</li>
         </ul>
       </div>
-      <img src="/portrait_cat.png" alt="Una foto de Bel Rey con su gato" />
+      <img src="/bel-avatar.png" alt="Una foto de Bel Rey con su gato" />
     </section>
   );
 }

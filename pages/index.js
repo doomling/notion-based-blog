@@ -24,9 +24,9 @@ export default function Home() {
         <link rel="icon" href="doomling.svg" />
       </Head>
       <Nav />
+      <DoodleStarsBackground />
+      <Hero />
       <main className={styles.container}>
-        <DoodleStarsBackground />
-        <Hero />
         <About />
         <Projects />
         <Courses />
