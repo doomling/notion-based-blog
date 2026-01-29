@@ -13,7 +13,7 @@ export default function Projects() {
     {
       name: "Te lo explico com gatitos",
       img: "projects_2.png",
-      link: "https://tlecg.doomling.dev",
+      link: "https://teloexplicocongatitos.org",
     },
     {
       name: "Diseño y planificación de cursos técnicos",

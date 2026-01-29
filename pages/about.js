@@ -43,7 +43,7 @@ export default function Home({ entries }) {
           mientras aprovecho para divulgar sobre tecnología y programación en
           diversos proyectos. Los más relevantes son{" "}
           <a
-            href="https://teloexplicocongatitos.com"
+            href="https://teloexplicocongatitos.org"
             target="_blank"
             rel="noreferrer"
           >
