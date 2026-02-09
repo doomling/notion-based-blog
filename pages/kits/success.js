@@ -9,6 +9,8 @@ export default function Success() {
   const kitId = router.query.kit;
   const paymentId = router.query.payment_id;
   const status = router.query.status;
+  const provider = router.query.provider;
+  const paypalOrderId = router.query.token;
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -31,10 +33,33 @@ export default function Success() {
           console.error("Error fetching payment details:", err);
           setLoading(false);
         });
-    } else {
-      setLoading(false);
+      return;
     }
-  }, [router.isReady, kitId, paymentId, status]);
+
+    if (provider === "paypal" && paypalOrderId) {
+      fetch("/api/paypal/capture-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId: paypalOrderId }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.email && data.kitId) {
+            localStorage.setItem("userEmail", data.email);
+            router.push(`/kits/${data.kitId}?email=${encodeURIComponent(data.email)}`);
+          } else {
+            setLoading(false);
+          }
+        })
+        .catch((err) => {
+          console.error("Error capturing PayPal order:", err);
+          setLoading(false);
+        });
+      return;
+    }
+
+    setLoading(false);
+  }, [router.isReady, kitId, paymentId, status, provider, paypalOrderId]);
 
   if (loading) {
     return (

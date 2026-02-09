@@ -1,5 +1,5 @@
 import { MercadoPagoConfig, Payment } from "mercadopago";
-import { addKitPurchase } from "../../lib/mongodb";
+import { addKitPurchase, decrementKitStock } from "../../lib/mongodb";
 
 const client = new MercadoPagoConfig({
   accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN,
@@ -22,8 +22,13 @@ export default async function handler(req, res) {
         const payerEmail = paymentData.payer?.email;
 
         if (payerEmail && kitId) {
-          await addKitPurchase(payerEmail, kitId, data.id);
-          console.log(`Payment approved for kit ${kitId} by ${payerEmail}`);
+          const stockOk = await decrementKitStock(kitId);
+          if (stockOk) {
+            await addKitPurchase(payerEmail, kitId, data.id);
+            console.log(`Payment approved for kit ${kitId} by ${payerEmail}`);
+          } else {
+            console.warn(`Stock exhausted for kit ${kitId} on Mercado Pago payment ${data.id}`);
+          }
         }
       }
     } catch (error) {
