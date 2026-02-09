@@ -7,10 +7,12 @@ import styles from "../../styles/Home.module.scss";
 import kitStyles from "../../styles/Kit.module.scss";
 import DoodleStarsBackground from "../../components/StarsBackground";
 import Link from "next/link";
+import { getCountryFromRequest } from "../../lib/geo";
+import { getKitStock } from "../../lib/mongodb";
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
-export default function KitDetail({ kit }) {
+export default function KitDetail({ kit, countryCode, stock }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -18,11 +20,20 @@ export default function KitDetail({ kit }) {
   const [hasAccess, setHasAccess] = useState(false);
   const [blocks, setBlocks] = useState([]);
   const [checkingAccess, setCheckingAccess] = useState(true);
+  const [paypalLoading, setPaypalLoading] = useState(false);
 
   const formattedPrice = new Intl.NumberFormat("es-AR", {
     style: "currency",
     currency: "ARS",
   }).format(kit.price);
+
+  const formattedUsdPrice = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(kit.priceUsd || 0);
+
+  const isArgentina = countryCode === "AR";
+  const isOutOfStock = typeof stock === "number" && stock <= 0;
 
   // Check access on mount and when email changes in query
   useEffect(() => {
@@ -92,6 +103,40 @@ export default function KitDetail({ kit }) {
     }
   };
 
+  const handlePayPalPurchase = async () => {
+    setPaypalLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/paypal/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          kitId: kit.id,
+          kitName: kit.name,
+          priceUsd: kit.priceUsd,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Error al procesar el pago");
+      }
+
+      if (data.approveUrl) {
+        window.location.href = data.approveUrl;
+      } else {
+        throw new Error("No se pudo crear el link de pago");
+      }
+    } catch (error) {
+      console.error("PayPal checkout error:", error);
+      setError(error.message || "Ocurrió un error. Por favor intenta nuevamente.");
+    } finally {
+      setPaypalLoading(false);
+    }
+  };
+
   return (
     <>
       <Nav />
@@ -115,17 +160,57 @@ export default function KitDetail({ kit }) {
                 <div className={kitStyles.lockIcon}>🔒</div>
                 <h2>Contenido Premium</h2>
                 <p>Obtené acceso completo a este kit</p>
-                <div className={kitStyles.price}>{formattedPrice}</div>
-                <button
-                  onClick={handlePurchase}
-                //   disabled={loading || !email}
-                  className={kitStyles.buyButton}
-                >
-                  {loading ? "Procesando..." : "Comprar ahora"}
-                </button>
-                <p className={kitStyles.secureNote}>
-                  Pago seguro con Mercado Pago
-                </p>
+                <div className={kitStyles.price}>
+                  {isArgentina ? formattedPrice : formattedUsdPrice}
+                </div>
+                {isArgentina ? (
+                  <>
+                    <input
+                      type="email"
+                      placeholder="Tu email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className={kitStyles.emailInput}
+                    />
+                    {error && <div className={kitStyles.errorMessage}>{error}</div>}
+                    <button
+                      onClick={handlePurchase}
+                      disabled={loading || isOutOfStock}
+                      className={kitStyles.buyButton}
+                    >
+                      {isOutOfStock
+                        ? "Sin cupos"
+                        : loading
+                        ? "Procesando..."
+                        : "Comprar con Mercado Pago"}
+                    </button>
+                    <p className={kitStyles.secureNote}>
+                      {typeof stock === "number"
+                        ? `Cupos disponibles: ${stock}`
+                        : "Pago seguro con Mercado Pago"}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    {error && <div className={kitStyles.errorMessage}>{error}</div>}
+                    <button
+                      onClick={handlePayPalPurchase}
+                      disabled={paypalLoading || isOutOfStock}
+                      className={kitStyles.buyButton}
+                    >
+                      {isOutOfStock
+                        ? "Sin cupos"
+                        : paypalLoading
+                        ? "Procesando..."
+                        : "Pagar con PayPal"}
+                    </button>
+                    <p className={kitStyles.secureNote}>
+                      {typeof stock === "number"
+                        ? `Cupos disponibles: ${stock}`
+                        : "Pago seguro con PayPal. Usaremos el email de tu cuenta PayPal."}
+                    </p>
+                  </>
+                )}
               </div>
             </div>
           )}
@@ -137,7 +222,7 @@ export default function KitDetail({ kit }) {
   );
 }
 
-export async function getServerSideProps({ params, query }) {
+export async function getServerSideProps({ params, query, req }) {
   // Get all entries and find by niceUrl or ID
   const allEntries = await notion.databases.query({
     database_id: process.env.NOTION_KITS_DATABASE_ID,
@@ -175,6 +260,7 @@ export async function getServerSideProps({ params, query }) {
     name: properties.name?.title?.[0]?.plain_text || "",
     description: properties.description?.rich_text?.[0]?.plain_text || "",
     price: properties.price?.number || 0,
+    priceUsd: properties.priceUSD?.number || 0,
     niceUrl: properties.niceUrl?.rich_text?.[0]?.plain_text || "",
   };
 
@@ -220,11 +306,20 @@ export async function getServerSideProps({ params, query }) {
     blocksResolved = mappedBlocks;
   }
 
+  let stock = null;
+  try {
+    stock = await getKitStock(kit.id);
+  } catch (error) {
+    console.warn("Failed to load kit stock:", error);
+  }
+
   return {
     props: {
       kit,
       blocks: blocksResolved,
       hasAccess,
+      countryCode: getCountryFromRequest(req) || null,
+      stock,
     },
   };
 }

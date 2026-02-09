@@ -1,4 +1,5 @@
 import { MercadoPagoConfig, Preference } from "mercadopago";
+import { getKitStock } from "../../lib/mongodb";
 
 const client = new MercadoPagoConfig({
   accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN,
@@ -21,6 +22,11 @@ export default async function handler(req, res) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || (host ? `${protocol}://${host}` : 'http://localhost:3000');
 
   try {
+    const stock = await getKitStock(kitId);
+    if (stock !== null && stock <= 0) {
+      return res.status(409).json({ error: "No hay cupos disponibles" });
+    }
+
     const preference = new Preference(client);
 
     const result = await preference.create({
