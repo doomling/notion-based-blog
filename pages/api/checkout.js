@@ -41,6 +41,7 @@ export default async function handler(req, res) {
           },
         ],
         payer: email ? { email } : undefined,
+        metadata: email ? { email } : undefined,
         back_urls: {
           success: `${baseUrl}/kits/success?kit=${kitId}`,
           failure: `${baseUrl}/kits/failure`,

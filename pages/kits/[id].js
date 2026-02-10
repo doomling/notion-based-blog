@@ -8,7 +8,7 @@ import kitStyles from "../../styles/Kit.module.scss";
 import DoodleStarsBackground from "../../components/StarsBackground";
 import Link from "next/link";
 import { getCountryFromRequest } from "../../lib/geo";
-import { getKitStock } from "../../lib/mongodb";
+import { getKitStock, hasUserPurchasedKit } from "../../lib/mongodb";
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
@@ -181,6 +181,9 @@ export default function KitDetail({ kit, countryCode, stock }) {
                       {typeof stock === "number"
                         ? `Cupos disponibles: ${stock}`
                         : "Pago seguro con Mercado Pago"}
+                    </p>
+                    <p className={kitStyles.secureNote}>
+                      Usaremos el email que ingreses para darte acceso al contenido.
                     </p>
                   </>
                 ) : (

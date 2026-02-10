@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
       if (paymentData.status === "approved") {
         const kitId = paymentData.external_reference;
-        const payerEmail = paymentData.payer?.email;
+        const payerEmail = paymentData.metadata?.email || paymentData.payer?.email;
 
         if (payerEmail && kitId) {
           const stockOk = await decrementKitStock(kitId);

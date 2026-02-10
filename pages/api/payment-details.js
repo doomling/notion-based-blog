@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     const paymentData = await payment.get({ id: payment_id });
 
     return res.status(200).json({
-      email: paymentData.payer?.email,
+      email: paymentData.metadata?.email || paymentData.payer?.email,
       status: paymentData.status,
     });
   } catch (error) {
