@@ -35,7 +35,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { orderId } = req.body;
+  const { orderId, email: providedEmail } = req.body;
 
   if (!orderId) {
     return res.status(400).json({ error: "Missing orderId" });
@@ -65,7 +65,7 @@ export default async function handler(req, res) {
       data.purchase_units?.[0]?.custom_id ||
       data.purchase_units?.[0]?.reference_id ||
       null;
-    const payerEmail = data.payer?.email_address || null;
+    const payerEmail = (providedEmail && String(providedEmail).trim()) || data.payer?.email_address || null;
 
     if (payerEmail && kitId) {
       const stockOk = await decrementKitStock(kitId);
