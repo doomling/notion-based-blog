@@ -104,10 +104,17 @@ export default function KitDetail({ kit, countryCode, stock }) {
   };
 
   const handlePayPalPurchase = async () => {
+    if (!email || !email.includes("@")) {
+      setError("Por favor ingresa un email válido");
+      return;
+    }
+
     setPaypalLoading(true);
     setError("");
 
     try {
+      localStorage.setItem("paypalEmail", email);
+
       const response = await fetch("/api/paypal/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -115,6 +122,7 @@ export default function KitDetail({ kit, countryCode, stock }) {
           kitId: kit.id,
           kitName: kit.name,
           priceUsd: kit.priceUsd,
+          email,
         }),
       });
 
@@ -165,14 +173,6 @@ export default function KitDetail({ kit, countryCode, stock }) {
                 </div>
                 {isArgentina ? (
                   <>
-                    <input
-                      type="email"
-                      placeholder="Tu email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className={kitStyles.emailInput}
-                    />
-                    {error && <div className={kitStyles.errorMessage}>{error}</div>}
                     <button
                       onClick={handlePurchase}
                       disabled={loading || isOutOfStock}
@@ -192,6 +192,13 @@ export default function KitDetail({ kit, countryCode, stock }) {
                   </>
                 ) : (
                   <>
+                    <input
+                      type="email"
+                      placeholder="Tu email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className={kitStyles.emailInput}
+                    />
                     {error && <div className={kitStyles.errorMessage}>{error}</div>}
                     <button
                       onClick={handlePayPalPurchase}
@@ -207,7 +214,7 @@ export default function KitDetail({ kit, countryCode, stock }) {
                     <p className={kitStyles.secureNote}>
                       {typeof stock === "number"
                         ? `Cupos disponibles: ${stock}`
-                        : "Pago seguro con PayPal. Usaremos el email de tu cuenta PayPal."}
+                        : "Pago seguro con PayPal."}
                     </p>
                   </>
                 )}

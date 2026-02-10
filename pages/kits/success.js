@@ -37,15 +37,20 @@ export default function Success() {
     }
 
     if (provider === "paypal" && paypalOrderId) {
+      const storedEmail = typeof window !== "undefined"
+        ? localStorage.getItem("paypalEmail")
+        : null;
+
       fetch("/api/paypal/capture-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orderId: paypalOrderId }),
+        body: JSON.stringify({ orderId: paypalOrderId, email: storedEmail }),
       })
         .then((res) => res.json())
         .then((data) => {
           if (data.email && data.kitId) {
             localStorage.setItem("userEmail", data.email);
+            localStorage.removeItem("paypalEmail");
             router.push(`/kits/${data.kitId}?email=${encodeURIComponent(data.email)}`);
           } else {
             setLoading(false);
