@@ -63,12 +63,6 @@ export default function KitDetail({ kit, countryCode, stock }) {
   }, [router.isReady, router.query.email, kit.id]);
 
   const handlePurchase = async () => {
-    // Validate email
-    if (!email || !email.includes("@")) {
-      setError("Por favor ingresa un email válido");
-      return;
-    }
-
     setLoading(true);
     setError("");
     
@@ -80,7 +74,6 @@ export default function KitDetail({ kit, countryCode, stock }) {
           kitId: kit.id,
           kitName: kit.name,
           price: kit.price,
-          email,
         }),
       });
 
