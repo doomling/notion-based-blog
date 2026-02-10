@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter/dist/cjs/prism";
 
 export default function Code({ language, blocks }) {
   function parseAnnotations(text) {
