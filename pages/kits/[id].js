@@ -63,6 +63,11 @@ export default function KitDetail({ kit, countryCode, stock }) {
   }, [router.isReady, router.query.email, kit.id]);
 
   const handlePurchase = async () => {
+    if (!email || !email.includes("@")) {
+      setError("Por favor ingresa un email válido");
+      return;
+    }
+
     setLoading(true);
     setError("");
     
@@ -74,6 +79,7 @@ export default function KitDetail({ kit, countryCode, stock }) {
           kitId: kit.id,
           kitName: kit.name,
           price: kit.price,
+          email,
         }),
       });
 
@@ -166,6 +172,17 @@ export default function KitDetail({ kit, countryCode, stock }) {
                 </div>
                 {isArgentina ? (
                   <>
+                    <input
+                      type="email"
+                      placeholder="Tu email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className={kitStyles.emailInput}
+                    />
+                    <p className={kitStyles.secureNote}>
+                      Usaremos el email que ingreses para darte acceso al contenido.
+                    </p>
+                    {error && <div className={kitStyles.errorMessage}>{error}</div>}
                     <button
                       onClick={handlePurchase}
                       disabled={loading || isOutOfStock}
@@ -181,9 +198,6 @@ export default function KitDetail({ kit, countryCode, stock }) {
                       {typeof stock === "number"
                         ? `Cupos disponibles: ${stock}`
                         : "Pago seguro con Mercado Pago"}
-                    </p>
-                    <p className={kitStyles.secureNote}>
-                      Usaremos el email que ingreses para darte acceso al contenido.
                     </p>
                   </>
                 ) : (
