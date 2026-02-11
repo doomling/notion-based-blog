@@ -1,4 +1,10 @@
-const PAYPAL_BASE_URL = "https://api-m.paypal.com";
+// Use environment variable to switch between sandbox and production
+// Set PAYPAL_ENVIRONMENT=sandbox for testing, or production for live
+const PAYPAL_ENV = process.env.PAYPAL_ENVIRONMENT || "sandbox";
+const PAYPAL_BASE_URL =
+  PAYPAL_ENV === "production"
+    ? "https://api-m.paypal.com"
+    : "https://api.sandbox.paypal.com";
 
 async function getPayPalAccessToken() {
   const clientId = process.env.PAYPAL_CLIENT_ID;
@@ -22,6 +28,7 @@ async function getPayPalAccessToken() {
   const data = await response.json();
 
   if (!response.ok) {
+    console.error("PayPal token error:", data);
     throw new Error(data.error_description || "Failed to get PayPal token");
   }
 
@@ -33,10 +40,21 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { kitId, kitName, priceUsd } = req.body;
+  const { kitId, kitName, priceUsd, email } = req.body;
 
   if (!kitId || !kitName || !priceUsd) {
     return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  // Validate email format if provided
+  if (email && (!email.includes("@") || !email.includes("."))) {
+    return res.status(400).json({ error: "Invalid email format" });
+  }
+
+  // Validate price is a positive number
+  const price = Number(priceUsd);
+  if (isNaN(price) || price <= 0) {
+    return res.status(400).json({ error: "Invalid price" });
   }
 
   const protocol =
@@ -70,7 +88,7 @@ export default async function handler(req, res) {
             description: kitName,
             amount: {
               currency_code: "USD",
-              value: Number(priceUsd).toFixed(2),
+              value: price.toFixed(2),
             },
           },
         ],

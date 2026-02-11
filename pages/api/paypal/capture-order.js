@@ -1,6 +1,12 @@
 import { addKitPurchase, decrementKitStock } from "../../../lib/mongodb";
 
-const PAYPAL_BASE_URL = "https://api-m.paypal.com";
+// Use environment variable to switch between sandbox and production
+// Set PAYPAL_ENVIRONMENT=sandbox for testing, or production for live
+const PAYPAL_ENV = process.env.PAYPAL_ENVIRONMENT || "sandbox";
+const PAYPAL_BASE_URL =
+  PAYPAL_ENV === "production"
+    ? "https://api-m.paypal.com"
+    : "https://api.sandbox.paypal.com";
 
 async function getPayPalAccessToken() {
   const clientId = process.env.PAYPAL_CLIENT_ID;
@@ -58,22 +64,45 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (!response.ok) {
+      console.error("PayPal capture API error:", data);
       throw new Error(data.message || "Failed to capture PayPal order");
+    }
+
+    // Check if order was successfully captured
+    if (data.status !== "COMPLETED") {
+      console.warn(`PayPal order ${orderId} status is ${data.status}, not COMPLETED`);
+      return res.status(400).json({
+        error: `Order status is ${data.status}, expected COMPLETED`,
+        status: data.status,
+      });
     }
 
     const kitId =
       data.purchase_units?.[0]?.custom_id ||
       data.purchase_units?.[0]?.reference_id ||
       null;
-    const payerEmail = (providedEmail && String(providedEmail).trim()) || data.payer?.email_address || null;
+    const payerEmail =
+      (providedEmail && String(providedEmail).trim()) ||
+      data.payer?.email_address ||
+      null;
 
-    if (payerEmail && kitId) {
-      const stockOk = await decrementKitStock(kitId);
-      if (stockOk) {
-        await addKitPurchase(payerEmail, kitId, orderId);
-      } else {
-        console.warn(`Stock exhausted for kit ${kitId} on PayPal order ${orderId}`);
-      }
+    if (!kitId) {
+      console.error("No kitId found in PayPal order:", orderId);
+      return res.status(400).json({ error: "Kit ID not found in order" });
+    }
+
+    if (!payerEmail) {
+      console.error("No email found in PayPal order:", orderId);
+      return res.status(400).json({ error: "Email not found in order" });
+    }
+
+    // Decrement stock and record purchase
+    const stockOk = await decrementKitStock(kitId);
+    if (stockOk) {
+      await addKitPurchase(payerEmail, kitId, orderId);
+    } else {
+      console.warn(`Stock exhausted for kit ${kitId} on PayPal order ${orderId}`);
+      return res.status(409).json({ error: "No hay cupos disponibles" });
     }
 
     return res.status(200).json({
