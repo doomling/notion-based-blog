@@ -330,12 +330,18 @@ export async function getServerSideProps({ params, query, req }) {
     console.warn("Failed to load kit stock:", error);
   }
 
+  // Allow overriding country for payment provider (e.g. ?country=US to test PayPal from Argentina)
+  const overrideCountry = query.country && /^[A-Za-z]{2}$/.test(String(query.country).trim())
+    ? String(query.country).trim().toUpperCase()
+    : null;
+  const countryCode = overrideCountry || getCountryFromRequest(req) || null;
+
   return {
     props: {
       kit,
       blocks: blocksResolved,
       hasAccess,
-      countryCode: getCountryFromRequest(req) || null,
+      countryCode,
       stock,
     },
   };
