@@ -40,18 +40,31 @@ export default function Success() {
       const storedEmail = typeof window !== "undefined"
         ? localStorage.getItem("paypalEmail")
         : null;
+      // Kit from return URL (PayPal preserves this); fallback when API returns wrong value (e.g. "default")
+      const kitFromUrl = kitId && String(kitId).trim();
 
       fetch("/api/paypal/capture-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orderId: paypalOrderId, email: storedEmail }),
+        body: JSON.stringify({
+          orderId: paypalOrderId,
+          email: storedEmail,
+          kitIdFromUrl: kitFromUrl,
+        }),
       })
         .then((res) => res.json())
         .then((data) => {
-          if (data.email && data.kitId) {
+          if (data.email) {
+            const resolvedKitId = (data.kitId && data.kitId !== "default")
+              ? data.kitId
+              : kitFromUrl;
             localStorage.setItem("userEmail", data.email);
             localStorage.removeItem("paypalEmail");
-            router.push(`/kits/${data.kitId}?email=${encodeURIComponent(data.email)}`);
+            if (resolvedKitId) {
+              router.push(`/kits/${resolvedKitId}?email=${encodeURIComponent(data.email)}`);
+            } else {
+              setLoading(false);
+            }
           } else {
             setLoading(false);
           }
