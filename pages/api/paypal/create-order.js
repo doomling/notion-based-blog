@@ -28,7 +28,6 @@ async function getPayPalAccessToken() {
   const data = await response.json();
 
   if (!response.ok) {
-    console.error("PayPal token error:", data);
     throw new Error(data.error_description || "Failed to get PayPal token");
   }
 
@@ -113,7 +112,6 @@ export default async function handler(req, res) {
       approveUrl,
     });
   } catch (error) {
-    console.error("PayPal create order error:", error);
     return res.status(500).json({ error: "Failed to create PayPal order" });
   }
 }

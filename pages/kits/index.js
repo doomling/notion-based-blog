@@ -4,10 +4,11 @@ import { Client } from "@notionhq/client";
 import Nav from "../../components/Nav";
 import KitCard from "../../components/KitCard";
 import DoodleStarsBackground from "../../components/StarsBackground";
+import { getCountryFromRequest } from "../../lib/geo";
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
-export default function Kits({ kits, error }) {
+export default function Kits({ kits, error, countryCode }) {
   return (
     <>
       <Head>
@@ -36,7 +37,7 @@ export default function Kits({ kits, error }) {
             {kits && kits.length > 0 ? (
               <div className={styles.kitsGrid}>
                 {kits.map((kit, i) => (
-                  <KitCard key={i} kit={kit} />
+                  <KitCard key={i} kit={kit} countryCode={countryCode} />
                 ))}
               </div>
             ) : (
@@ -52,21 +53,24 @@ export default function Kits({ kits, error }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps({ req, query }) {
   try {
     if (!process.env.NOTION_KITS_DATABASE_ID) {
       return {
         props: {
           kits: [],
           error: "NOTION_KITS_DATABASE_ID no está configurado",
+          countryCode: null,
         },
-        revalidate: 300,
       };
     }
 
     const entries = await notion.databases.query({
       database_id: process.env.NOTION_KITS_DATABASE_ID,
     });
+
+    const priceUSDProp = (entry) =>
+      entry?.properties?.priceUSD ?? entry?.properties?.PriceUSD ?? entry?.properties?.priceUsd;
 
     const kits = entries.results
       .map((entry) => {
@@ -90,6 +94,7 @@ export async function getStaticProps() {
           name: nameText,
           description: descProp?.rich_text?.[0]?.plain_text || "",
           price: priceProp?.number || 0,
+          priceUsd: (priceUSDProp(entry)?.number ?? 0) || 0,
           niceUrl: niceUrl,
           cover: coverProp?.url || coverProp?.files?.[0]?.file?.url || coverProp?.files?.[0]?.external?.url || null,
           visible: visibleProp?.checkbox ?? true,
@@ -98,20 +103,25 @@ export async function getStaticProps() {
       })
       .filter((kit) => kit.visible);
 
+    // País para precios (y override por query para testing, igual que en /kits/[id])
+    const overrideCountry = query.country && /^[A-Za-z]{2}$/.test(String(query.country).trim())
+      ? String(query.country).trim().toUpperCase()
+      : null;
+    const countryCode = overrideCountry || getCountryFromRequest(req) || null;
+
     return {
       props: {
         kits: kits ?? [],
+        countryCode,
       },
-      revalidate: 300,
     };
   } catch (error) {
-    console.error("Error fetching kits:", error);
     return {
       props: {
         kits: [],
         error: error.message || "Error desconocido al cargar los kits",
+        countryCode: null,
       },
-      revalidate: 300,
     };
   }
 }

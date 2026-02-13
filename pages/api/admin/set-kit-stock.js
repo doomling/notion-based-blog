@@ -24,7 +24,6 @@ export default async function handler(req, res) {
     const updated = await setKitStock(kitId, stock);
     return res.status(200).json({ kitId, stock: updated });
   } catch (error) {
-    console.error("Set kit stock error:", error);
     return res.status(500).json({ error: "Failed to set stock" });
   }
 }

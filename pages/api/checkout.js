@@ -58,7 +58,6 @@ export default async function handler(req, res) {
       init_point: result.init_point,
     });
   } catch (error) {
-    console.error("Mercado Pago error:", error);
     return res.status(500).json({ error: "Failed to create preference" });
   }
 }

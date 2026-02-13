@@ -1,11 +1,11 @@
 import Link from "next/link";
 import styles from "./style.module.scss";
 
-export default function KitCard({ kit }) {
-  const formattedPrice = new Intl.NumberFormat("es-AR", {
-    style: "currency",
-    currency: "ARS",
-  }).format(kit.price);
+export default function KitCard({ kit, countryCode }) {
+  const isArgentina = countryCode === "AR";
+  const formattedPrice = isArgentina
+    ? new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" }).format(kit.price ?? 0)
+    : new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(kit.priceUsd ?? 0);
 
   // Generate URL from niceUrl or fallback to ID
   const kitUrl = kit.niceUrl || kit.id;

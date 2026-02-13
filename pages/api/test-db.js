@@ -21,7 +21,6 @@ export default async function handler(req, res) {
       message: "MongoDB connection successful",
     });
   } catch (error) {
-    console.error("MongoDB connection error:", error);
     return res.status(500).json({
       connected: false,
       error: error.message,

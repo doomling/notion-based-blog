@@ -24,7 +24,6 @@ export default async function handler(req, res) {
       status: paymentData.status,
     });
   } catch (error) {
-    console.error("Error fetching payment:", error);
     return res.status(500).json({ error: "Failed to fetch payment details" });
   }
 }

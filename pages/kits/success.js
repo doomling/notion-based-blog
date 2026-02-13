@@ -29,8 +29,7 @@ export default function Success() {
             setLoading(false);
           }
         })
-        .catch((err) => {
-          console.error("Error fetching payment details:", err);
+        .catch(() => {
           setLoading(false);
         });
       return;
@@ -69,8 +68,7 @@ export default function Success() {
             setLoading(false);
           }
         })
-        .catch((err) => {
-          console.error("Error capturing PayPal order:", err);
+        .catch(() => {
           setLoading(false);
         });
       return;

@@ -64,13 +64,11 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("PayPal capture API error:", data);
       throw new Error(data.message || "Failed to capture PayPal order");
     }
 
     // Check if order was successfully captured
     if (data.status !== "COMPLETED") {
-      console.warn(`PayPal order ${orderId} status is ${data.status}, not COMPLETED`);
       return res.status(400).json({
         error: `Order status is ${data.status}, expected COMPLETED`,
         status: data.status,
@@ -91,12 +89,10 @@ export default async function handler(req, res) {
       null;
 
     if (!kitId) {
-      console.error("No kitId found in PayPal order:", orderId);
       return res.status(400).json({ error: "Kit ID not found in order" });
     }
 
     if (!payerEmail) {
-      console.error("No email found in PayPal order:", orderId);
       return res.status(400).json({ error: "Email not found in order" });
     }
 
@@ -105,7 +101,6 @@ export default async function handler(req, res) {
     if (stockOk) {
       await addKitPurchase(payerEmail, kitId, orderId);
     } else {
-      console.warn(`Stock exhausted for kit ${kitId} on PayPal order ${orderId}`);
       return res.status(409).json({ error: "No hay cupos disponibles" });
     }
 
@@ -115,7 +110,6 @@ export default async function handler(req, res) {
       email: payerEmail,
     });
   } catch (error) {
-    console.error("PayPal capture error:", error);
     return res.status(500).json({ error: "Failed to capture PayPal order" });
   }
 }

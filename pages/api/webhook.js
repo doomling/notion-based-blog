@@ -25,14 +25,10 @@ export default async function handler(req, res) {
           const stockOk = await decrementKitStock(kitId);
           if (stockOk) {
             await addKitPurchase(payerEmail, kitId, data.id);
-            console.log(`Payment approved for kit ${kitId} by ${payerEmail}`);
-          } else {
-            console.warn(`Stock exhausted for kit ${kitId} on Mercado Pago payment ${data.id}`);
           }
         }
       }
     } catch (error) {
-      console.error("Webhook error:", error);
       return res.status(500).json({ error: "Webhook processing failed" });
     }
   }
