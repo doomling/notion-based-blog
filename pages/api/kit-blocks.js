@@ -45,7 +45,6 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ blocks: mappedBlocks });
   } catch (error) {
-    console.error("Error fetching kit blocks:", error);
     return res.status(500).json({ error: "Failed to fetch blocks" });
   }
 }

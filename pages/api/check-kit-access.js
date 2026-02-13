@@ -15,7 +15,6 @@ export default async function handler(req, res) {
     const hasAccess = await hasUserPurchasedKit(email, kitId);
     return res.status(200).json({ hasAccess });
   } catch (error) {
-    console.error("Error checking kit access:", error);
     return res.status(500).json({ error: "Failed to check access" });
   }
 }

@@ -35,7 +35,6 @@ export default async function handler(req, res) {
       message: "Acceso restaurado correctamente",
     });
   } catch (error) {
-    console.error("Error restoring access:", error);
     return res.status(500).json({ error: "Error al restaurar acceso" });
   }
 }

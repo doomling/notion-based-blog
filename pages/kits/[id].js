@@ -51,7 +51,7 @@ export default function KitDetail({ kit, countryCode, stock }) {
             setBlocks(blocksData.blocks || []);
           }
         } catch (err) {
-          console.error("Error checking access:", err);
+          // access check failed
         }
       }
       setCheckingAccess(false);
@@ -91,13 +91,11 @@ export default function KitDetail({ kit, countryCode, stock }) {
 
       if (data.init_point) {
         window.location.href = data.init_point;
-      } else {
-        throw new Error("No se pudo crear el link de pago");
+        return; // No quitar loading: la página va a redirigir
       }
+      throw new Error("No se pudo crear el link de pago");
     } catch (error) {
-      console.error("Checkout error:", error);
       setError(error.message || "Ocurrió un error. Por favor intenta nuevamente.");
-    } finally {
       setLoading(false);
     }
   };
@@ -133,13 +131,11 @@ export default function KitDetail({ kit, countryCode, stock }) {
 
       if (data.approveUrl) {
         window.location.href = data.approveUrl;
-      } else {
-        throw new Error("No se pudo crear el link de pago");
+        return; // No quitar loading: la página va a redirigir
       }
+      throw new Error("No se pudo crear el link de pago");
     } catch (error) {
-      console.error("PayPal checkout error:", error);
       setError(error.message || "Ocurrió un error. Por favor intenta nuevamente.");
-    } finally {
       setPaypalLoading(false);
     }
   };
@@ -327,15 +323,21 @@ export async function getServerSideProps({ params, query, req }) {
   try {
     stock = await getKitStock(kit.id);
   } catch (error) {
-    console.warn("Failed to load kit stock:", error);
+    // stock unavailable
   }
+
+  // Allow overriding country for payment provider (e.g. ?country=US to test PayPal from Argentina)
+  const overrideCountry = query.country && /^[A-Za-z]{2}$/.test(String(query.country).trim())
+    ? String(query.country).trim().toUpperCase()
+    : null;
+  const countryCode = overrideCountry || getCountryFromRequest(req) || null;
 
   return {
     props: {
       kit,
       blocks: blocksResolved,
       hasAccess,
-      countryCode: getCountryFromRequest(req) || null,
+      countryCode,
       stock,
     },
   };
