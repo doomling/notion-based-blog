@@ -65,7 +65,7 @@ export default function Success() {
               $ ./verificar --pago en_curso
             </div>
             <p className={kitStyles.secureNote} style={{ fontSize: "0.9rem", color: "#666" }}>
-              // esperá mientras verificamos tu transacción...
+              {"// esperá mientras verificamos tu transacción..."}
             </p>
           </div>
         </div>

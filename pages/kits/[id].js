@@ -163,7 +163,7 @@ export default function KitDetail({ kit, countryCode, stock }) {
               --contenido {kit.niceUrl || kit.id.slice(0, 8)}
             </span>
           </div>
-          <div className={kitStyles.commentLine}>// contenido digital</div>
+          <div className={kitStyles.commentLine}>{"// contenido digital"}</div>
           <h1>{kit.name}</h1>
           <p className={kitStyles.description}>{kit.description}</p>
 
@@ -176,7 +176,7 @@ export default function KitDetail({ kit, countryCode, stock }) {
           {!hasAccess && (
             <div className={kitStyles.paywall}>
               <div className={kitStyles.paywallContent}>
-                <div className={kitStyles.commentLine}>// acceso premium</div>
+                <div className={kitStyles.commentLine}>{"// acceso premium"}</div>
                 <div className={kitStyles.price}>
                   {isArgentina ? formattedPrice : formattedUsdPrice}
                 </div>

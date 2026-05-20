@@ -89,7 +89,7 @@ export default function Consultoria({ countryCode, priceArs, priceUsd }) {
           $ ./consulta{" "}
           <span className={kitStyles.commandArg}>--area carrera_tech</span>
         </div>
-        <div className={kitStyles.commentLine}>// mentoring & orientación</div>
+        <div className={kitStyles.commentLine}>{"// mentoring & orientación"}</div>
 
         <h1 className={styles.headline}>
           Impulsá tu <span className={styles.accentWord}>carrera</span> en
@@ -102,7 +102,7 @@ export default function Consultoria({ countryCode, priceArs, priceUsd }) {
         </p>
 
         <div className={styles.formatCard}>
-          <div className={kitStyles.commentLine}>// formato</div>
+          <div className={kitStyles.commentLine}>{"// formato"}</div>
           <div className={styles.sessionLabel}>
             Sesión 1:1 de consultoría
             <span className={styles.durationTag}>60 min</span>

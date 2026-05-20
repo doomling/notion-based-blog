@@ -34,7 +34,7 @@ export default function Home({ entries }) {
           $ ./doomling{" "}
           <span className={styles.commandArg}>--perfil bel_rey</span>
         </div>
-        <div className={styles.commentLine}>// programadora · docente · creadora</div>
+        <div className={styles.commentLine}>{"// programadora · docente · creadora"}</div>
         <h1>¿Quién soy?</h1>
         <p>
           Hola, gracias por visitar este blog. Mi nombre es Bel Rey y soy una

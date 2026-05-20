@@ -31,7 +31,7 @@ export default function Kits({ kits, error, countryCode }) {
           $ ./kits{" "}
           <span className={styles.commandArg}>--tipo premium</span>
         </div>
-        <div className={styles.commentLine}>// recursos digitales</div>
+        <div className={styles.commentLine}>{"// recursos digitales"}</div>
         <h1>Kits</h1>
         {error ? (
           <div style={{ color: "#ff6b6b", padding: "2rem" }}>

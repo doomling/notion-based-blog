@@ -15,7 +15,7 @@ export default function Hero() {
           $ ./doomling --area carrera_tech
         </div>
         <div className={styles.commentTag}>
-          // recursos & educación en tecnología
+          {"// recursos & educación en tecnología"}
         </div>
         <h1>Te ayudo a ordenar tu carrera en tecnología</h1>
         <p>Clases, kits y recursos para dar el siguiente paso</p>

@@ -54,7 +54,7 @@ export default function ConsultoriaSuccess() {
             $ ./consulta --estado verificando
           </div>
           <p className={kitStyles.secureNote} style={{ fontSize: "0.9rem", color: "#555" }}>
-            // confirmando tu reserva...
+            {"// confirmando tu reserva..."}
           </p>
         </div>
       </>

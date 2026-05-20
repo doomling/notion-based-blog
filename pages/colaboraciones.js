@@ -29,7 +29,7 @@ export default function Home({ entries }) {
           $ ./contacto{" "}
           <span className={styles.commandArg}>--tipo colaboracion</span>
         </div>
-        <div className={styles.commentLine}>// charlas · sponsorship · proyectos</div>
+        <div className={styles.commentLine}>{"// charlas · sponsorship · proyectos"}</div>
         <h1>Colaboraciones</h1>
         <p>
           ¿Te parece que podemos colaborar en un proyecto? Estos son algunos de

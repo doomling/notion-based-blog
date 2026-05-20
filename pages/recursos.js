@@ -34,7 +34,7 @@ export default function Resources({ entries }) {
           $ ./recursos{" "}
           <span className={styles.commandArg}>--para devs</span>
         </div>
-        <div className={styles.commentLine}>// guías · freelance · carrera</div>
+        <div className={styles.commentLine}>{"// guías · freelance · carrera"}</div>
         <h1>Recursos</h1>
         <p>
           En esta sección comparto guías y recursos para estudiantes
