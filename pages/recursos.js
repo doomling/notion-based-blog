@@ -24,6 +24,17 @@ export default function Resources({ entries }) {
       </Head>
       <Nav />
       <div className={styles.container}>
+        <div className={styles.terminalHeader}>
+          <span className={styles.terminalBracket}>[</span>
+          {" "}recursos{" "}
+          <span className={styles.terminalBracket}>]</span>
+          <span className={styles.statusDot} />
+        </div>
+        <div className={styles.commandLine}>
+          $ ./recursos{" "}
+          <span className={styles.commandArg}>--para devs</span>
+        </div>
+        <div className={styles.commentLine}>// guías · freelance · carrera</div>
         <h1>Recursos</h1>
         <p>
           En esta sección comparto guías y recursos para estudiantes

@@ -1,139 +1,210 @@
-.description {
-  font-size: 1.1rem;
-  color: #aaa;
-  margin-bottom: 2rem;
-  line-height: 1.6;
+$purple: #7c5ce7;
+$purple-light: #a78bfa;
+$purple-dim: rgba(124, 92, 231, 0.15);
+$purple-border: rgba(124, 92, 231, 0.25);
+$purple-border-strong: rgba(124, 92, 231, 0.5);
+$green: #22c55e;
+$mono: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+
+// --- Terminal label styles ---
+
+.terminalHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: $mono;
+  font-size: 0.82rem;
+  color: #f8faff;
+  margin-bottom: 0.75rem;
 }
+
+.terminalBracket {
+  color: $purple-light;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: $green;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+  display: inline-block;
+  margin-left: 2px;
+}
+
+.commandLine {
+  font-family: $mono;
+  font-size: 0.8rem;
+  color: $purple-light;
+  margin-bottom: 0.5rem;
+}
+
+.commandArg {
+  color: #f8faff;
+}
+
+.commentLine {
+  font-family: $mono;
+  font-size: 0.72rem;
+  color: $purple-light;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 1.25rem;
+}
+
+// --- Kit content ---
+
+.description {
+  font-size: 1.05rem;
+  color: #999;
+  margin-bottom: 2rem;
+  line-height: 1.75;
+}
+
+// --- Paywall ---
 
 .paywall {
   position: relative;
-  margin-top: 2rem;
-  padding: 4rem 0;
-  background-color: rgba(0,0,0,0.2);
-  backdrop-filter: blur(10px);
+  margin-top: 3rem;
+  padding: 2rem 0;
+}
+
+.paywallContent {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid $purple-border;
+  border-left: 3px solid $purple;
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  max-width: 480px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
 
   &::before {
+    content: '';
     position: absolute;
-    top: -100px;
-    left: 0;
-    right: 0;
-    height: 150px;
+    inset: 0;
+    border-radius: 12px;
+    background: radial-gradient(ellipse at top left, $purple-dim, transparent 65%);
     pointer-events: none;
   }
 }
 
-.paywallContent {
-  background: linear-gradient(145deg, #1a1a1a 100%, transparent 0);
-  border: 2px solid #4CAF50;
-  border-radius: 16px;
-  padding: 3rem 2rem;
-  text-align: center;
-  max-width: 500px;
-  margin: 0 auto;
-  box-shadow: 0 0 60px rgba(76, 175, 80, 0.1);
-}
-
 .lockIcon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  display: none;
 }
 
 .paywallContent h2 {
-  margin: 0 0 0.5rem;
-  font-size: 1.75rem;
-  color: #fff;
+  margin: 0 0 0.25rem;
+  font-size: 1.4rem;
+  color: #f8faff;
+  font-family: $mono;
 }
 
 .paywallContent > p {
-  color: #aaa;
+  color: #666;
   margin: 0 0 1.5rem;
+  font-size: 0.875rem;
 }
 
 .price {
-  font-size: 2.5rem;
+  font-size: 2.75rem;
   font-weight: 700;
-  color: #4CAF50;
-  margin-bottom: 1.5rem;
+  color: #f8faff;
+  margin-bottom: 1.75rem;
+  letter-spacing: -0.02em;
 }
 
 .emailInput {
   width: 100%;
-  padding: 14px 18px;
-  border: 1px solid #333;
+  padding: 13px 16px;
+  border: 1px solid $purple-border;
   border-radius: 8px;
-  background: #0a0a0a;
-  color: #fff;
-  font-size: 1rem;
-  margin-bottom: 1rem;
+  background: rgba(0, 0, 0, 0.45);
+  color: #f8faff;
+  font-size: 0.9rem;
+  font-family: $mono;
+  margin-bottom: 0.875rem;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 
   &:focus {
-    border-color: #4CAF50;
+    border-color: $purple;
+    box-shadow: 0 0 0 3px $purple-dim;
   }
 
   &::placeholder {
-    color: #666;
+    color: #4a4a5a;
   }
 }
 
 .buyButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  padding: 16px 32px;
-  background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
-  border: none;
-  border-radius: 8px;
+  padding: 14px 28px;
+  background: $purple;
+  border: 1px solid transparent;
+  border-radius: 10px;
   color: #fff;
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: 600;
+  font-family: $mono;
+  letter-spacing: 0.03em;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
   margin-bottom: 1em;
 
   &:hover:not(:disabled) {
+    background: #8f6ef0;
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(76, 175, 80, 0.3);
+    box-shadow: 0 8px 24px rgba(124, 92, 231, 0.35);
   }
 
   &:disabled {
-    opacity: 0.7;
+    opacity: 0.55;
     cursor: not-allowed;
   }
 }
 
 .errorMessage {
-  color: #ff6b6b;
-  font-size: 0.9rem;
-  margin: -0.5rem 0 1rem;
-  min-height: 1.5rem;
+  color: #f87171;
+  font-size: 0.82rem;
+  font-family: $mono;
+  margin: -0.375rem 0 0.875rem;
+  min-height: 1.25rem;
 }
 
 .secureNote {
-  margin-top: 1rem;
-  font-size: 0.85rem;
-  color: #666;
+  margin-top: 0.75rem;
+  font-size: 0.78rem;
+  color: #4a4a5a;
+  font-family: $mono;
 }
 
 .restoreAccess {
   margin-top: 1.5rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #333;
+  border-top: 1px solid $purple-border;
 }
 
 .restoreButton {
   background: transparent;
-  border: 1px solid #4CAF50;
-  color: #4CAF50;
+  border: 1px solid $purple-border-strong;
+  color: $purple-light;
   padding: 10px 20px;
   border-radius: 6px;
-  font-size: 0.9rem;
+  font-size: 0.82rem;
+  font-family: $mono;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   width: 100%;
 
   &:hover {
-    background: rgba(76, 175, 80, 0.1);
-    border-color: #5CBF60;
+    background: $purple-dim;
+    border-color: $purple;
   }
 }
 
@@ -143,33 +214,35 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10000;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
 }
 
 .modalContent {
-  background: linear-gradient(145deg, #1a1a1a 0%, #111 100%);
-  border: 2px solid #4CAF50;
-  border-radius: 16px;
+  background: #0f0f1c;
+  border: 1px solid $purple-border-strong;
+  border-left: 3px solid $purple;
+  border-radius: 12px;
   padding: 2rem;
-  max-width: 500px;
+  max-width: 480px;
   width: 90%;
   text-align: center;
 
   h3 {
     margin: 0 0 0.5rem;
-    font-size: 1.5rem;
-    color: #fff;
+    font-size: 1.4rem;
+    color: #f8faff;
+    font-family: $mono;
   }
 
   > p {
-    color: #aaa;
+    color: #666;
     margin: 0 0 1.5rem;
-    font-size: 0.95rem;
+    font-size: 0.875rem;
   }
 }
 
@@ -184,18 +257,18 @@
 }
 
 .cancelButton {
-  padding: 16px 32px;
+  padding: 14px 24px;
   background: transparent;
-  border: 1px solid #666;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
-  color: #aaa;
-  font-size: 1.1rem;
-  font-weight: 600;
+  color: #666;
+  font-size: 0.9rem;
+  font-family: $mono;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 
   &:hover {
-    border-color: #888;
-    color: #fff;
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #f8faff;
   }
 }

@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgb(7, 18, 7);
+  background: transparent;
 }
 
 .waveContainer {
@@ -26,62 +26,62 @@
   background: linear-gradient(
     135deg,
     transparent 0%,
-    rgba(46, 125, 50, 0.12) 15%,
-    rgba(76, 175, 168, 0.329) 35%,
-    rgba(129, 199, 132, 0.1) 50%,
-    rgba(76, 175, 80, 0.2) 65%,
-    rgba(55, 46, 125, 0.12) 85%,
+    rgba(124, 92, 231, 0.08) 15%,
+    rgba(124, 92, 231, 0.2) 35%,
+    rgba(167, 139, 250, 0.1) 50%,
+    rgba(124, 92, 231, 0.15) 65%,
+    rgba(90, 63, 191, 0.08) 85%,
     transparent 100%
   );
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
-  border: 1px solid rgba(76, 175, 80, 0.15);
+  border: 1px solid rgba(124, 92, 231, 0.1);
   border-radius: 50%;
   filter: blur(35px);
   transform: rotate(-25deg);
   animation: waveAnimation 10s ease-in-out infinite;
-    
+
   &:nth-child(1) {
     top: -10%;
     animation-delay: 0s;
     background: linear-gradient(
       135deg,
       transparent 0%,
-      rgba(27, 94, 32, 0.15) 15%,
-      rgba(46, 125, 50, 0.22) 35%,
-      rgba(76, 175, 80, 0.28) 50%,
-      rgba(129, 199, 132, 0.3) 65%,
-      rgba(76, 175, 80, 0.22) 85%,
+      rgba(90, 63, 191, 0.12) 15%,
+      rgba(124, 92, 231, 0.22) 35%,
+      rgba(124, 92, 231, 0.28) 50%,
+      rgba(167, 139, 250, 0.25) 65%,
+      rgba(124, 92, 231, 0.18) 85%,
       transparent 100%
     );
   }
-  
+
   &:nth-child(2) {
     top: 25%;
     animation-delay: -3.5s;
     background: linear-gradient(
       -135deg,
       transparent 0%,
-      rgba(46, 125, 50, 0.14) 15%,
-      rgba(76, 175, 80, 0.2) 35%,
-      rgba(129, 199, 132, 0.24) 50%,
-      rgba(76, 175, 80, 0.2) 65%,
-      rgba(46, 125, 50, 0.14) 85%,
+      rgba(124, 92, 231, 0.1) 15%,
+      rgba(124, 92, 231, 0.18) 35%,
+      rgba(167, 139, 250, 0.22) 50%,
+      rgba(124, 92, 231, 0.18) 65%,
+      rgba(90, 63, 191, 0.1) 85%,
       transparent 100%
     );
   }
-  
+
   &:nth-child(3) {
     bottom: -5%;
     animation-delay: -7s;
     background: linear-gradient(
       135deg,
       transparent 0%,
-      rgba(27, 94, 32, 0.12) 15%,
-      rgba(46, 125, 50, 0.18) 35%,
-      rgba(76, 175, 80, 0.24) 50%,
-      rgba(129, 199, 132, 0.26) 65%,
-      rgba(76, 175, 80, 0.18) 85%,
+      rgba(90, 63, 191, 0.1) 15%,
+      rgba(124, 92, 231, 0.16) 35%,
+      rgba(124, 92, 231, 0.22) 50%,
+      rgba(167, 139, 250, 0.2) 65%,
+      rgba(124, 92, 231, 0.14) 85%,
       transparent 100%
     );
   }
@@ -145,10 +145,28 @@
   }
 
   p {
-    color: #fff;
+    color: rgba(255, 255, 255, 0.75);
     font-size: 1.2em;
     margin-bottom: 30px;
   }
+}
+
+.terminalTag {
+  font-family: ui-monospace, 'Cascadia Code', monospace;
+  font-size: 0.82rem;
+  color: #a78bfa;
+  margin-bottom: 0.5rem;
+}
+
+.commentTag {
+  font-family: ui-monospace, 'Cascadia Code', monospace;
+  font-size: 0.72rem;
+  color: #a78bfa;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 1.25rem;
+  opacity: 1;
+  line-height: 1;
 }
 
 .buttons {

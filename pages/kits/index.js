@@ -21,6 +21,17 @@ export default function Kits({ kits, error, countryCode }) {
       </Head>
       <Nav />
       <div className={styles.container}>
+        <div className={styles.terminalHeader}>
+          <span className={styles.terminalBracket}>[</span>
+          {" "}kits{" "}
+          <span className={styles.terminalBracket}>]</span>
+          <span className={styles.statusDot} />
+        </div>
+        <div className={styles.commandLine}>
+          $ ./kits{" "}
+          <span className={styles.commandArg}>--tipo premium</span>
+        </div>
+        <div className={styles.commentLine}>// recursos digitales</div>
         <h1>Kits</h1>
         {error ? (
           <div style={{ color: "#ff6b6b", padding: "2rem" }}>

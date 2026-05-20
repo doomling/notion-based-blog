@@ -20,6 +20,13 @@ export default function Post({ blocks, title }) {
           <div onClick={() => router.back()}>← Volver</div>
         </div>
         <div className={styles.articleContainer}>
+          <div className={styles.terminalHeader}>
+            <span className={styles.terminalBracket}>[</span>
+            {" "}post{" "}
+            <span className={styles.terminalBracket}>]</span>
+            <span className={styles.statusDot} />
+          </div>
+          <div className={styles.commentLine}>// entrada del blog</div>
           <h1>{title}</h1>
           {blocks.map((block, key) => {
             return <Block data={block} key={key} />;

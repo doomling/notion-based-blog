@@ -16,10 +16,11 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
-  // Get base URL from request headers or environment variable
-  const protocol = req.headers['x-forwarded-proto'] || (req.headers.host?.includes('localhost') ? 'http' : 'https');
-  const host = req.headers.host || req.headers['x-forwarded-host'];
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || (host ? `${protocol}://${host}` : 'http://localhost:3000');
+  const host = req.headers['x-forwarded-host'] || req.headers.host || '';
+  const isLocalhost = host.includes('localhost') || host.includes('127.0.0.1');
+  const protocol = isLocalhost ? 'http' : (req.headers['x-forwarded-proto']?.split(',')[0]?.trim() || 'https');
+  const rawBase = process.env.NEXT_PUBLIC_BASE_URL || (host ? `${protocol}://${host}` : 'http://localhost:3000');
+  const baseUrl = rawBase.replace(/\/$/, '');
 
   try {
     const stock = await getKitStock(kitId);

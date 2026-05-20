@@ -5,7 +5,7 @@ import {
   faXTwitter,
   faYoutube,
   faTiktok,
-  faInstagram
+  faInstagram,
 } from "@fortawesome/free-brands-svg-icons";
 
 export default function Nav() {
@@ -20,12 +20,15 @@ export default function Nav() {
           </div>
         </Link>
         <div className={styles.social}>
-          <li>
+          {/* <li>
             <Link href="/recursos">Recursos</Link>
-          </li>
+          </li> */}
           {/* <li>
             <Link href="/kits">Kits</Link>
           </li> */}
+          <li>
+            <Link href="/consultoria">Consultoría</Link>
+          </li>
           <li>
             <a
               href="https://newsletter.doomling.dev"
@@ -35,9 +38,9 @@ export default function Nav() {
               Newsletter
             </a>
           </li>
-          <li>
+          {/* <li>
             <Link href="/colaboraciones">Colaboraciones</Link>
-          </li>
+          </li> */}
           <div className={styles.rrss}>
             <li>
               <a

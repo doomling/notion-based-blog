@@ -1,7 +1,7 @@
 :root {
-  --red: #1da247;
-  --yellow: #90EE90;
-  --black: #001d00;
+  --red: #7c5ce7;
+  --yellow: #a78bfa;
+  --black: #0b0b14;
   --border: 20px;
 }
 
@@ -9,8 +9,9 @@ html,
 body {
   padding: 0;
   margin: 0;
-  /* background-color: #1d1d1d; */
-  /* background-color: #14101b; */
+  background-color: #0b0b14;
+  background-image: radial-gradient(circle, rgba(124, 92, 231, 0.18) 1px, transparent 1px);
+  background-size: 24px 24px;
   color: #f8faff;
   scroll-behavior: smooth;
   font-family: 'Open Sans', sans-serif;
