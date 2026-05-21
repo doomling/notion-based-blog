@@ -1,14 +1,14 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.scss";
-import { Client } from "@notionhq/client";
+// import { Client } from "@notionhq/client";
 import Nav from "../components/Nav";
-import Link from "next/link";
+// import Link from "next/link";
 import Courses from "../components/Courses";
 import DoodleStarsBackground from "../components/StarsBackground";
 
-const notion = new Client({ auth: process.env.NOTION_TOKEN });
+// const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
-export default function Resources({ entries }) {
+export default function Resources() {
   return (
     <>
       <Head>
@@ -39,17 +39,6 @@ export default function Resources({ entries }) {
         <p>
           En esta sección comparto guías y recursos para estudiantes
           autodidactas, freelancers y más
-          <ul>
-            {entries.map((data, i) => {
-              return (
-                <li className={styles.link} key={i}>
-                  <Link href={`/${data.niceUrl}`}>
-                    {data.name[0].plain_text}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
         </p>
         <Courses />
         <DoodleStarsBackground />
@@ -59,31 +48,13 @@ export default function Resources({ entries }) {
 }
 
 export async function getStaticProps() {
-  const entries = await notion.databases.query({
-    database_id: process.env.NOTION_DATABASE_ID,
-  });
-
-  const mappedEntries = entries.results
-    .map((entry) => {
-      const { properties } = entry;
-      const { name, description, tags, visible, niceUrl, hideInList } =
-        properties;
-
-      return {
-        name: name.title,
-        description: description.rich_text,
-        tags: tags.multi_select,
-        id: entry.id,
-        visible: visible.checkbox,
-        niceUrl: niceUrl.rich_text[0].plain_text,
-        hideInList: hideInList?.checkbox,
-      };
-    })
-    .filter((entry) => entry.visible == true && entry.hideInList == false);
+  // const entries = await notion.databases.query({
+  //   database_id: process.env.NOTION_DATABASE_ID,
+  // });
 
   return {
     props: {
-      entries: mappedEntries ?? [],
+      // entries: [],
     },
   };
 }
