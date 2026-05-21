@@ -1,4 +1,5 @@
 import Stripe from "stripe";
+import { getSlots } from "../../../lib/slots";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -15,6 +16,11 @@ export default async function handler(req, res) {
   const priceUsd = Number(process.env.CONSULTORIA_PRICE_USD);
   if (!priceUsd || isNaN(priceUsd) || priceUsd <= 0) {
     return res.status(500).json({ error: "Precio USD de consultoría no configurado" });
+  }
+
+  const slots = getSlots();
+  if (slots !== null && slots <= 0) {
+    return res.status(409).json({ error: "No hay cupos disponibles" });
   }
 
   const host = req.headers["x-forwarded-host"] || req.headers.host || "";

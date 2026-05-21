@@ -3,13 +3,15 @@ import Nav from "../../components/Nav";
 import kitStyles from "../../styles/Kit.module.scss";
 import styles from "../../styles/Consultoria.module.scss";
 import { getCountryFromRequest } from "../../lib/geo";
+import { getSlots } from "../../lib/slots";
 
-export default function Consultoria({ countryCode, priceArs, priceUsd }) {
+export default function Consultoria({ countryCode, priceArs, priceUsd, stock }) {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const isArgentina = countryCode === "AR";
+  const isOutOfStock = typeof stock === "number" && stock <= 0;
 
   const formattedPrice = isArgentina
     ? new Intl.NumberFormat("es-AR", {
@@ -137,10 +139,12 @@ export default function Consultoria({ countryCode, priceArs, priceUsd }) {
           {error && <div className={kitStyles.errorMessage}>{error}</div>}
           <button
             onClick={isArgentina ? handlePurchase : handleStripePurchase}
-            disabled={loading}
+            disabled={loading || isOutOfStock}
             className={kitStyles.buyButton}
           >
-            {loading
+            {isOutOfStock
+              ? "Sin cupos disponibles"
+              : loading
               ? "procesando..."
               : `→ reservar sesión · ${formattedPrice}`}
           </button>
@@ -163,11 +167,14 @@ export async function getServerSideProps({ req, query }) {
       : null;
   const countryCode = overrideCountry || getCountryFromRequest(req) || null;
 
+  const stock = getSlots();
+
   return {
     props: {
       countryCode,
       priceArs: Number(process.env.CONSULTORIA_PRICE_ARS) || 0,
       priceUsd: Number(process.env.CONSULTORIA_PRICE_USD) || 0,
+      stock,
     },
   };
 }

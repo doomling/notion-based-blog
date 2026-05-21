@@ -1,5 +1,6 @@
 import Stripe from "stripe";
 import { addKitPurchase, decrementKitStock } from "../../../lib/mongodb";
+import { decrementSlots } from "../../../lib/slots";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -37,6 +38,7 @@ export default async function handler(req, res) {
         return res.status(409).json({ error: "No hay cupos disponibles" });
       }
     } else if (type === "consultoria" && email) {
+      decrementSlots(session.id);
       await addKitPurchase(email, "consultoria-1on1", session.id);
     }
 

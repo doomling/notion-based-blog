@@ -21,7 +21,16 @@ export default function ConsultoriaSuccess() {
     if (status === "approved" && paymentId) {
       fetch(`/api/payment-details?payment_id=${paymentId}`)
         .then((res) => res.json())
-        .then((data) => { if (data.email) setEmail(data.email); })
+        .then((data) => {
+          if (data.email) {
+            setEmail(data.email);
+            fetch("/api/consultoria-mp-confirm", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email: data.email, paymentId }),
+            }).catch(() => {});
+          }
+        })
         .catch(() => {})
         .finally(() => setLoading(false));
       return;

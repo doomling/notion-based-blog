@@ -1,4 +1,5 @@
 import { MercadoPagoConfig, Preference } from "mercadopago";
+import { getSlots } from "../../../lib/slots";
 
 const client = new MercadoPagoConfig({
   accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN,
@@ -17,6 +18,11 @@ export default async function handler(req, res) {
   const price = Number(process.env.CONSULTORIA_PRICE_ARS);
   if (!price || isNaN(price) || price <= 0) {
     return res.status(500).json({ error: "Precio de consultoría no configurado" });
+  }
+
+  const slots = getSlots();
+  if (slots !== null && slots <= 0) {
+    return res.status(409).json({ error: "No hay cupos disponibles" });
   }
 
   const host = req.headers["x-forwarded-host"] || req.headers.host || "";
