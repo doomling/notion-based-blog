@@ -1,5 +1,5 @@
 import { MercadoPagoConfig, Preference } from "mercadopago";
-import { getSlots } from "../../../lib/slots";
+import { getSlots } from "../../lib/slots";
 
 const client = new MercadoPagoConfig({
   accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN,
