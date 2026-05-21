@@ -38,32 +38,7 @@ export default function Post({ blocks, title }) {
   );
 }
 
-export async function getStaticPaths() {
-  // Fetch all blog posts to generate paths
-  const entries = await notion.databases.query({
-    database_id: process.env.NOTION_DATABASE_ID,
-    filter: {
-      property: "visible",
-      checkbox: {
-        equals: true,
-      },
-    },
-  });
-
-  const paths = entries.results
-    .map((entry) => {
-      const niceUrl = entry.properties.niceUrl?.rich_text?.[0]?.plain_text || "";
-      return niceUrl ? { params: { id: niceUrl } } : null;
-    })
-    .filter(Boolean);
-
-  return {
-    paths,
-    fallback: "blocking", // Generate pages on-demand for new posts
-  };
-}
-
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
   const entries = await notion.databases.query({
     database_id: process.env.NOTION_DATABASE_ID,
     filter: {
@@ -128,6 +103,5 @@ export async function getStaticProps({ params }) {
       blocks: blocksResolved,
       title: entries.results[0].properties.name.title[0].plain_text,
     },
-    revalidate: 300,
   };
 }
