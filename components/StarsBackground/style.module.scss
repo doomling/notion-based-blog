@@ -5,24 +5,22 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background-color: rgb(7, 18, 7);
+  background-color: transparent;
 
   z-index: -1;
 }
 .estrella {
   position: absolute;
-  color: #4CAF50;
+  color: rgba(124, 92, 231, 0.55);
   opacity: 0;
   font-weight: bold;
   font-family: monospace;
   animation: flotar 10s infinite ease-in-out alternate, glow 2s ease-in-out infinite alternate;
   text-shadow: 
-    0 0 5px rgba(144, 238, 144, 0.8),
-    0 0 10px rgba(144, 238, 144, 0.6),
-    0 0 15px rgba(144, 238, 144, 0.4),
-    0 0 20px rgba(144, 238, 144, 0.3),
-    0 0 30px rgba(144, 238, 144, 0.2),
-    0 0 40px rgba(144, 238, 144, 0.1);
+    0 0 5px rgba(124, 92, 231, 0.7),
+    0 0 10px rgba(124, 92, 231, 0.5),
+    0 0 20px rgba(124, 92, 231, 0.3),
+    0 0 35px rgba(124, 92, 231, 0.15);
 }
 
 @keyframes glow {
@@ -37,12 +35,10 @@
   }
   100% {
     text-shadow: 
-      0 0 8px rgba(144, 238, 144, 1),
-      0 0 15px rgba(144, 238, 144, 0.8),
-      0 0 25px rgba(144, 238, 144, 0.6),
-      0 0 35px rgba(144, 238, 144, 0.4),
-      0 0 45px rgba(144, 238, 144, 0.3),
-      0 0 60px rgba(144, 238, 144, 0.2);
+      0 0 8px rgba(167, 139, 250, 1),
+      0 0 18px rgba(124, 92, 231, 0.8),
+      0 0 30px rgba(124, 92, 231, 0.5),
+      0 0 50px rgba(124, 92, 231, 0.3);
   }
 }
 

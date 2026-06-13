@@ -24,6 +24,17 @@ export default function Home({ entries }) {
       </Head>
       <Nav />
       <div className={styles.container}>
+        <div className={styles.terminalHeader}>
+          <span className={styles.terminalBracket}>[</span>
+          {" "}sobre_mi{" "}
+          <span className={styles.terminalBracket}>]</span>
+          <span className={styles.statusDot} />
+        </div>
+        <div className={styles.commandLine}>
+          $ ./doomling{" "}
+          <span className={styles.commandArg}>--perfil bel_rey</span>
+        </div>
+        <div className={styles.commentLine}>{"// programadora · docente · creadora"}</div>
         <h1>¿Quién soy?</h1>
         <p>
           Hola, gracias por visitar este blog. Mi nombre es Bel Rey y soy una

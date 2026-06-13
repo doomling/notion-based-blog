@@ -1,0 +1,180 @@
+.page {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+
+.headline {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0.5rem 0 1.25rem;
+  letter-spacing: -0.03em;
+  color: #f8faff;
+}
+
+.accentWord {
+  color: #7c5ce7;
+}
+
+.subheadline {
+  font-size: 1.05rem;
+  color: #999;
+  line-height: 1.75;
+  margin-bottom: 2.5rem;
+  opacity: 1;
+}
+
+.formatCard {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(124, 92, 231, 0.2);
+  border-left: 3px solid #7c5ce7;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2.25rem;
+}
+
+.sessionLabel {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #f8faff;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.durationTag {
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #22c55e;
+  font-family: ui-monospace, monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  background: rgba(124, 92, 231, 0.1);
+  border: 1px solid rgba(124, 92, 231, 0.25);
+  color: #a78bfa;
+  font-family: ui-monospace, monospace;
+  font-size: 0.78rem;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.topicsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 2.5rem;
+  margin-bottom: 2.5rem;
+  padding: 0 0.25rem;
+
+  p {
+    font-size: 0.95rem;
+    color: #bbb;
+    padding-left: 1.1rem;
+    position: relative;
+    margin: 0.35rem 0;
+    line-height: 1.5;
+    opacity: 1;
+
+    &::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #7c5ce7;
+    }
+  }
+}
+
+.buySection {
+  max-width: 480px;
+  text-align: center;
+}
+
+.emailInput {
+  width: 100%;
+  padding: 16px 20px;
+  border: 1px solid rgba(124, 92, 231, 0.5);
+  border-radius: 10px;
+  background: rgba(124, 92, 231, 0.07);
+  color: #f8faff;
+  font-size: 1rem;
+  font-family: ui-monospace, 'Cascadia Code', monospace;
+  margin-bottom: 1rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+
+  &:focus {
+    border-color: #7c5ce7;
+    background: rgba(124, 92, 231, 0.12);
+    box-shadow: 0 0 0 3px rgba(124, 92, 231, 0.18);
+  }
+
+  &::placeholder {
+    color: #5a5a7a;
+  }
+}
+
+.bookingSection {
+  text-align: center;
+  padding: 3rem 2rem;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.bookingButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 28px;
+  background: #7c5ce7;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: #fff;
+  font-family: ui-monospace, 'Cascadia Code', monospace;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  margin-top: 1.5rem;
+
+  &:hover {
+    background: #8f6ef0;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(124, 92, 231, 0.35);
+  }
+}
+
+.fallbackNote {
+  color: #a78bfa;
+  font-family: ui-monospace, monospace;
+  font-size: 0.9rem;
+  margin-top: 1.5rem;
+
+  strong {
+    color: #f8faff;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .headline {
+    font-size: 2.4rem;
+  }
+
+  .topicsGrid {
+    grid-template-columns: 1fr;
+  }
+
+}

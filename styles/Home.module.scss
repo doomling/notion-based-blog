@@ -1,3 +1,49 @@
+$mono: ui-monospace, 'Cascadia Code', monospace;
+
+.terminalHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: $mono;
+  font-size: 0.82rem;
+  color: #f8faff;
+  margin-bottom: 0.75rem;
+}
+
+.terminalBracket {
+  color: #a78bfa;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+  display: inline-block;
+  margin-left: 2px;
+}
+
+.commandLine {
+  font-family: $mono;
+  font-size: 0.8rem;
+  color: #a78bfa;
+  margin-bottom: 0.5rem;
+}
+
+.commandArg {
+  color: #f8faff;
+}
+
+.commentLine {
+  font-family: $mono;
+  font-size: 0.72rem;
+  color: #a78bfa;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 1.25rem;
+}
+
 .kitsDescription {
   color: #aaa;
   font-size: 1.1rem;

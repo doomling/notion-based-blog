@@ -20,7 +20,6 @@ export default function KitDetail({ kit, countryCode, stock }) {
   const [hasAccess, setHasAccess] = useState(false);
   const [blocks, setBlocks] = useState([]);
   const [checkingAccess, setCheckingAccess] = useState(true);
-  const [paypalLoading, setPaypalLoading] = useState(false);
 
   const formattedPrice = new Intl.NumberFormat("es-AR", {
     style: "currency",
@@ -35,17 +34,23 @@ export default function KitDetail({ kit, countryCode, stock }) {
   const isArgentina = countryCode === "AR";
   const isOutOfStock = typeof stock === "number" && stock <= 0;
 
-  // Check access on mount and when email changes in query
+  // Check access on mount: use email from URL or from localStorage (persistent access)
   useEffect(() => {
     const checkAccess = async () => {
-      const userEmail = router.query.email;
+      let userEmail = router.query.email;
+      if (!userEmail && typeof window !== "undefined") {
+        try {
+          if (window.localStorage) {
+            userEmail = localStorage.getItem("userEmail");
+          }
+        } catch (e) {}
+      }
       if (userEmail) {
         try {
           const response = await fetch(`/api/check-kit-access?email=${encodeURIComponent(userEmail)}&kitId=${kit.id}`);
           const data = await response.json();
           if (data.hasAccess) {
             setHasAccess(true);
-            // Fetch blocks if user has access
             const blocksResponse = await fetch(`/api/kit-blocks?kitId=${kit.id}`);
             const blocksData = await blocksResponse.json();
             setBlocks(blocksData.blocks || []);
@@ -100,19 +105,17 @@ export default function KitDetail({ kit, countryCode, stock }) {
     }
   };
 
-  const handlePayPalPurchase = async () => {
+  const handleStripePurchase = async () => {
     if (!email || !email.includes("@")) {
       setError("Por favor ingresa un email válido");
       return;
     }
 
-    setPaypalLoading(true);
+    setLoading(true);
     setError("");
 
     try {
-      localStorage.setItem("paypalEmail", email);
-
-      const response = await fetch("/api/paypal/create-order", {
+      const response = await fetch("/api/stripe/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -129,14 +132,14 @@ export default function KitDetail({ kit, countryCode, stock }) {
         throw new Error(data.error || "Error al procesar el pago");
       }
 
-      if (data.approveUrl) {
-        window.location.href = data.approveUrl;
-        return; // No quitar loading: la página va a redirigir
+      if (data.url) {
+        window.location.href = data.url;
+        return;
       }
       throw new Error("No se pudo crear el link de pago");
     } catch (error) {
       setError(error.message || "Ocurrió un error. Por favor intenta nuevamente.");
-      setPaypalLoading(false);
+      setLoading(false);
     }
   };
 
@@ -148,6 +151,19 @@ export default function KitDetail({ kit, countryCode, stock }) {
           <Link href="/kits" className={styles.card}>← Volver</Link>
         </div>
         <div className={styles.articleContainer}>
+          <div className={kitStyles.terminalHeader}>
+            <span className={kitStyles.terminalBracket}>[</span>
+            {" "}{kit.name.toLowerCase().replace(/\s+/g, "_")}{" "}
+            <span className={kitStyles.terminalBracket}>]</span>
+            <span className={kitStyles.statusDot} />
+          </div>
+          <div className={kitStyles.commandLine}>
+            $ ./kit{" "}
+            <span className={kitStyles.commandArg}>
+              --contenido {kit.niceUrl || kit.id.slice(0, 8)}
+            </span>
+          </div>
+          <div className={kitStyles.commentLine}>{"// contenido digital"}</div>
           <h1>{kit.name}</h1>
           <p className={kitStyles.description}>{kit.description}</p>
 
@@ -160,9 +176,7 @@ export default function KitDetail({ kit, countryCode, stock }) {
           {!hasAccess && (
             <div className={kitStyles.paywall}>
               <div className={kitStyles.paywallContent}>
-                <div className={kitStyles.lockIcon}>🔒</div>
-                <h2>Contenido Premium</h2>
-                <p>Obtené acceso completo a este kit</p>
+                <div className={kitStyles.commentLine}>{"// acceso premium"}</div>
                 <div className={kitStyles.price}>
                   {isArgentina ? formattedPrice : formattedUsdPrice}
                 </div>
@@ -170,7 +184,7 @@ export default function KitDetail({ kit, countryCode, stock }) {
                   <>
                     <input
                       type="email"
-                      placeholder="Tu email"
+                      placeholder="// tu email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className={kitStyles.emailInput}
@@ -187,8 +201,8 @@ export default function KitDetail({ kit, countryCode, stock }) {
                       {isOutOfStock
                         ? "Sin cupos"
                         : loading
-                        ? "Procesando..."
-                        : "Comprar con Mercado Pago"}
+                        ? "procesando..."
+                        : "→ pagar con Mercado Pago"}
                     </button>
                     <p className={kitStyles.secureNote}>
                       {typeof stock === "number"
@@ -200,27 +214,27 @@ export default function KitDetail({ kit, countryCode, stock }) {
                   <>
                     <input
                       type="email"
-                      placeholder="Tu email"
+                      placeholder="// tu email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className={kitStyles.emailInput}
                     />
                     {error && <div className={kitStyles.errorMessage}>{error}</div>}
                     <button
-                      onClick={handlePayPalPurchase}
-                      disabled={paypalLoading || isOutOfStock}
+                      onClick={handleStripePurchase}
+                      disabled={loading || isOutOfStock}
                       className={kitStyles.buyButton}
                     >
                       {isOutOfStock
                         ? "Sin cupos"
-                        : paypalLoading
-                        ? "Procesando..."
-                        : "Pagar con PayPal"}
+                        : loading
+                        ? "procesando..."
+                        : "→ pagar con Stripe"}
                     </button>
                     <p className={kitStyles.secureNote}>
                       {typeof stock === "number"
                         ? `Cupos disponibles: ${stock}`
-                        : "Pago seguro con PayPal."}
+                        : "Pago seguro con Stripe."}
                     </p>
                   </>
                 )}

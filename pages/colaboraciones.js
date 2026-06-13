@@ -19,6 +19,17 @@ export default function Home({ entries }) {
       </Head>
       <Nav />
       <div className={styles.container}>
+        <div className={styles.terminalHeader}>
+          <span className={styles.terminalBracket}>[</span>
+          {" "}colaboraciones{" "}
+          <span className={styles.terminalBracket}>]</span>
+          <span className={styles.statusDot} />
+        </div>
+        <div className={styles.commandLine}>
+          $ ./contacto{" "}
+          <span className={styles.commandArg}>--tipo colaboracion</span>
+        </div>
+        <div className={styles.commentLine}>{"// charlas · sponsorship · proyectos"}</div>
         <h1>Colaboraciones</h1>
         <p>
           ¿Te parece que podemos colaborar en un proyecto? Estos son algunos de

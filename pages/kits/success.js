@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Nav from "../../components/Nav";
 import styles from "../../styles/Home.module.scss";
+import kitStyles from "../../styles/Kit.module.scss";
 
 export default function Success() {
   const router = useRouter();
@@ -9,82 +10,63 @@ export default function Success() {
   const kitId = router.query.kit;
   const paymentId = router.query.payment_id;
   const status = router.query.status;
-  const provider = router.query.provider;
-  const paypalOrderId = router.query.token;
+  const sessionId = router.query.session_id;
 
   useEffect(() => {
     if (!router.isReady) return;
-    
+
+    // MercadoPago success
     if (status === "approved" && kitId && paymentId) {
-      // Fetch payment details to get email
       fetch(`/api/payment-details?payment_id=${paymentId}`)
         .then((res) => res.json())
         .then((data) => {
           if (data.email) {
-            // Store email in localStorage for persistent access
-            localStorage.setItem("userEmail", data.email);
-            // Redirect to kit with email for access check
+            try { localStorage.setItem("userEmail", data.email); } catch (e) {}
             router.push(`/kits/${kitId}?email=${encodeURIComponent(data.email)}`);
           } else {
             setLoading(false);
           }
         })
-        .catch(() => {
-          setLoading(false);
-        });
+        .catch(() => setLoading(false));
       return;
     }
 
-    if (provider === "paypal" && paypalOrderId) {
-      const storedEmail = typeof window !== "undefined"
-        ? localStorage.getItem("paypalEmail")
-        : null;
-      // Kit from return URL (PayPal preserves this); fallback when API returns wrong value (e.g. "default")
-      const kitFromUrl = kitId && String(kitId).trim();
-
-      fetch("/api/paypal/capture-order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          orderId: paypalOrderId,
-          email: storedEmail,
-          kitIdFromUrl: kitFromUrl,
-        }),
-      })
+    // Stripe success
+    if (sessionId) {
+      fetch(`/api/stripe/session?session_id=${sessionId}`)
         .then((res) => res.json())
         .then((data) => {
-          if (data.email) {
-            const resolvedKitId = (data.kitId && data.kitId !== "default")
-              ? data.kitId
-              : kitFromUrl;
-            localStorage.setItem("userEmail", data.email);
-            localStorage.removeItem("paypalEmail");
-            if (resolvedKitId) {
-              router.push(`/kits/${resolvedKitId}?email=${encodeURIComponent(data.email)}`);
-            } else {
-              setLoading(false);
-            }
+          if (data.email && data.kitId) {
+            try { localStorage.setItem("userEmail", data.email); } catch (e) {}
+            router.push(`/kits/${data.kitId}?email=${encodeURIComponent(data.email)}`);
           } else {
             setLoading(false);
           }
         })
-        .catch(() => {
-          setLoading(false);
-        });
+        .catch(() => setLoading(false));
       return;
     }
 
     setLoading(false);
-  }, [router.isReady, kitId, paymentId, status, provider, paypalOrderId]);
+  }, [router.isReady, kitId, paymentId, status, sessionId]);
 
   if (loading) {
     return (
       <>
         <Nav />
         <div className={styles.container}>
-          <div style={{ textAlign: "center", padding: "3rem" }}>
-            <h1>Procesando pago...</h1>
-            <p>Por favor espera mientras verificamos tu pago.</p>
+          <div style={{ textAlign: "center", padding: "4rem 2rem" }}>
+            <div className={kitStyles.terminalHeader} style={{ justifyContent: "center" }}>
+              <span className={kitStyles.terminalBracket}>[</span>
+              {" "}procesando_pago{" "}
+              <span className={kitStyles.terminalBracket}>]</span>
+            </div>
+            <div className={kitStyles.commandLine} style={{ textAlign: "center", marginBottom: "1.5rem" }}>
+              $ ./verificar --pago en_curso
+            </div>
+            <p className={kitStyles.secureNote} style={{ fontSize: "0.9rem", color: "#666" }}>
+              {"// esperá mientras verificamos tu transacción..."}
+            </p>
           </div>
         </div>
       </>
@@ -95,12 +77,23 @@ export default function Success() {
     <>
       <Nav />
       <div className={styles.container}>
-        <div style={{ textAlign: "center", padding: "3rem" }}>
-          <h1>¡Pago exitoso!</h1>
-          <p>Tu pago ha sido procesado correctamente.</p>
+        <div style={{ textAlign: "center", padding: "4rem 2rem" }}>
+          <div className={kitStyles.terminalHeader} style={{ justifyContent: "center" }}>
+            <span className={kitStyles.terminalBracket}>[</span>
+            {" "}pago_exitoso{" "}
+            <span className={kitStyles.terminalBracket}>]</span>
+            <span className={kitStyles.statusDot} />
+          </div>
+          <div className={kitStyles.commandLine} style={{ textAlign: "center", marginBottom: "1.5rem" }}>
+            $ ./acceso --estado{" "}
+            <span className={kitStyles.commandArg}>confirmado</span>
+          </div>
+          <h1 style={{ fontSize: "2rem", marginBottom: "0.75rem" }}>¡Todo listo!</h1>
+          <p style={{ color: "#888" }}>Tu pago fue procesado correctamente.</p>
           {kitId && (
-            <a href={`/kits/${kitId}`} style={{ color: "#4CAF50" }}>
-              Ver tu kit
+            <a href={`/kits/${kitId}`} className={kitStyles.buyButton}
+              style={{ display: "inline-block", marginTop: "1.5rem", width: "auto", padding: "14px 32px", textDecoration: "none" }}>
+              → ver tu kit
             </a>
           )}
         </div>

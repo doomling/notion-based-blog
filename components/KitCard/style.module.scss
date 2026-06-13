@@ -13,9 +13,9 @@
   cursor: pointer;
 
   &:hover {
-    border-color: #4CAF50;
+    border-color: #7c5ce7;
     transform: translateY(-4px);
-    box-shadow: 0 8px 32px rgba(76, 175, 80, 0.15);
+    box-shadow: 0 8px 32px rgba(124, 92, 231, 0.2);
   }
 }
 
@@ -57,27 +57,34 @@
 
 .priceTag {
   display: inline-block;
-  background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
-  color: #fff;
-  padding: 8px 16px;
+  background: rgba(124, 92, 231, 0.2);
+  border: 1px solid rgba(124, 92, 231, 0.4);
+  color: #a78bfa;
+  padding: 6px 14px;
   border-radius: 6px;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1rem;
+  font-family: ui-monospace, monospace;
 }
 
 .buyButton {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  padding: 12px;
-  background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
-  color: #fff;
-  text-align: center;
+  padding: 14px;
+  background: rgba(124, 92, 231, 0.12);
+  border-top: 1px solid rgba(124, 92, 231, 0.25);
+  color: #a78bfa;
   font-weight: 600;
-  border-top: 1px solid #333;
-  transition: all 0.3s ease;
+  font-family: ui-monospace, 'Cascadia Code', monospace;
+  font-size: 0.9rem;
+  letter-spacing: 0.03em;
+  transition: background 0.2s, color 0.2s;
   margin-top: auto;
 
   .card:hover & {
-    background: linear-gradient(135deg, #5CBF60 0%, #3E8D42 100%);
+    background: rgba(124, 92, 231, 0.22);
+    color: #f8faff;
   }
 }
