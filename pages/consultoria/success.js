@@ -23,16 +23,17 @@ export default function ConsultoriaSuccess() {
         .then((res) => res.json())
         .then((data) => {
           if (data.email) {
-            setEmail(data.email);
             fetch("/api/consultoria-mp-confirm", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ email: data.email, paymentId }),
             }).catch(() => {});
           }
+          window.location.href = "/api/booking-redirect";
         })
-        .catch(() => {})
-        .finally(() => setLoading(false));
+        .catch(() => {
+          setLoading(false);
+        });
       return;
     }
 
@@ -40,9 +41,12 @@ export default function ConsultoriaSuccess() {
     if (sessionId) {
       fetch(`/api/stripe/session?session_id=${sessionId}`)
         .then((res) => res.json())
-        .then((data) => { if (data.email) setEmail(data.email); })
-        .catch(() => {})
-        .finally(() => setLoading(false));
+        .then(() => {
+          window.location.href = "/api/booking-redirect";
+        })
+        .catch(() => {
+          setLoading(false);
+        });
       return;
     }
 

@@ -40,7 +40,7 @@ export default async function handler(req, res) {
             id: "consultoria-1on1",
             title: "Consultoría 1:1 - 60 min",
             quantity: 1,
-            unit_price: price,
+            unit_price: parseFloat(price),
             currency_id: "ARS",
           },
         ],
@@ -59,6 +59,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ init_point: result.init_point });
   } catch (error) {
-    return res.status(500).json({ error: "Error al crear la preferencia de pago" });
+    console.error("MP consultoria error:", JSON.stringify(error?.cause ?? error?.message ?? error));
+    return res.status(500).json({ error: error?.message || "Error al crear la preferencia de pago" });
   }
 }
