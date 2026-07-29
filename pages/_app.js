@@ -4,6 +4,7 @@ import { Open_Sans } from "next/font/google";
 import Script from "next/script";
 import { EntriesProvider } from "../lib/EntriesContext";
 import Loading from "../components/Loading";
+import PromoBar from "../components/PromoBar";
 
 // If loading a variable font, you don't need to specify the font weight
 const openSans = Open_Sans({
@@ -32,6 +33,7 @@ function MyApp({ Component, pageProps }) {
       </Script>
       <EntriesProvider entries={pageProps.entries ?? []}></EntriesProvider>
       <Loading />
+      <PromoBar />
       <main className={openSans.className}>
         <Component {...pageProps} />
         <Analytics />

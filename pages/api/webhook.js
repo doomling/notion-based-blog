@@ -1,5 +1,6 @@
 import { MercadoPagoConfig, Payment } from "mercadopago";
 import { addKitPurchase, decrementKitStock } from "../../lib/mongodb";
+import { sendConsultoriaBookingEmail } from "../../lib/email";
 
 const client = new MercadoPagoConfig({
   accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN,
@@ -25,6 +26,12 @@ export default async function handler(req, res) {
           const stockOk = await decrementKitStock(kitId);
           if (stockOk) {
             await addKitPurchase(payerEmail, kitId, data.id);
+          }
+
+          // Deliver the booking link server-side so it no longer depends on
+          // the buyer completing the MercadoPago redirect back to the site.
+          if (kitId === "consultoria-1on1") {
+            await sendConsultoriaBookingEmail(payerEmail, data.id);
           }
         }
       }

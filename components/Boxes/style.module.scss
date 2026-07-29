@@ -6,13 +6,35 @@
 }
 
 .item {
-  border: 1px solid white;
+  position: relative;
+  border: 1px solid rgba(124, 92, 231, 0.28);
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
   .name {
     padding: 0 10px;
   }
+}
+
+.featured {
+  border: 2px solid #a78bfa;
+  box-shadow: 0 0 0 1px #a78bfa, 0 0 18px rgba(167, 139, 250, 0.55);
+}
+
+.badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #7c5ce7, #a78bfa);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(11, 11, 20, 0.45);
 }
 
 @media only screen and (max-width: 768px) {

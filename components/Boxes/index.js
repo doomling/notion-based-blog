@@ -6,7 +6,11 @@ export default function Boxes({ items }) {
       {items.map((item, i) => {
         return (
           <a href={item.link} key={i} target="_blank" rel="noreferrer">
-            <div className={styles.item} key={i}>
+            <div
+              className={`${styles.item} ${item.featured ? styles.featured : ""}`}
+              key={i}
+            >
+              {item.badge && <span className={styles.badge}>{item.badge}</span>}
               <img src={item.img} alt="imagen decorativa" />
               <div className={styles.name}>
                 <h3>{item.name}</h3>

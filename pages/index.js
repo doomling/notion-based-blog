@@ -15,7 +15,7 @@ export default function Home() {
     <>
       <Head>
         <title>
-          Bel Rey - blog sobre programación, emprendimiento y búsqueda laboral
+          Bel Rey - Programación, emprendimiento y consultorías de carrera
         </title>
         <meta
           name="description"
@@ -27,9 +27,9 @@ export default function Home() {
       <DoodleStarsBackground />
       <Hero />
       <main className={styles.container}>
+        <Courses />
         <About />
         <Projects />
-        <Courses />
         {/* <Substack /> */}
       </main>
     </>
